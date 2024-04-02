@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:project/enrollchild.dart';
 import 'package:project/main.dart';
 
 class HomePage extends StatelessWidget {
@@ -11,14 +12,25 @@ class HomePage extends StatelessWidget {
         title: Text(title),
       ),
       body: Center(
-        child: TextButton(
-          onPressed: () {
-            Navigator.pop(context);
-            Navigator.push(context, MaterialPageRoute(builder: (context) {
-              return const LoginPage(title: "Homepage");
-            }));
-          },
-          child: const Text('Go Back'),
+        child: Column(
+          children: [
+            TextButton(
+                onPressed: () {
+                  Navigator.push(context, MaterialPageRoute(builder: (context) {
+                    return const EnrollChild(title: "Enroll Child");
+                  }));
+                },
+                child: const Text('Enroll Child')),
+            TextButton(
+              onPressed: () {
+                Navigator.pop(context);
+                Navigator.push(context, MaterialPageRoute(builder: (context) {
+                  return const LoginPage(title: "Homepage");
+                }));
+              },
+              child: const Text('Go Back'),
+            )
+          ],
         ),
       ),
     );
