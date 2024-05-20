@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:project/main.dart';
+import 'package:project/Screens/login.dart';
 
 class SignupPage extends StatelessWidget {
   const SignupPage({Key? key, required this.title}) : super(key: key);

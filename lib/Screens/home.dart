@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:project/enrollchild.dart';
-import 'package:project/main.dart';
+import 'package:project/Screens/enroll_child.dart';
+import 'package:project/Screens/login.dart';
 
 class HomePage extends StatelessWidget {
   const HomePage({Key? key, required this.title}) : super(key: key);

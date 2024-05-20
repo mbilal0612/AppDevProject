@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "137180011559",
+    "project_id": "kidsync-4fb6e",
+    "storage_bucket": "kidsync-4fb6e.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:137180011559:android:778889acb4ce7b510c0202",
+        "android_client_info": {
+          "package_name": "com.example.project"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "137180011559-uppjlhaukdkr0glg9hjbsapq5nh3tegm.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.project",
+            "certificate_hash": "eee41242327a19bea87559ba47bce6ac0c0e4074"
+          }
+        },
+        {
+          "client_id": "137180011559-t9ekdhvt85viucuo07v5fh5aoadbg48g.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBVDglmve_g0uvsAbbnT-OHSY-b4GuoiqI"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "137180011559-t9ekdhvt85viucuo07v5fh5aoadbg48g.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
