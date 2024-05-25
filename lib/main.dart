@@ -15,10 +15,12 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Flutter Demo',
+      title: 'Kid Sync',
       theme: ThemeData(
+        dialogBackgroundColor:const Color(0xFFE5E5E5),
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
-        useMaterial3: false,
+        
+        useMaterial3: true,
       ),
       home: const LoginPage(title: 'Flutter Page'),
     );

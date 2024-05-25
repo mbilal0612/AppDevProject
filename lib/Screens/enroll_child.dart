@@ -19,7 +19,7 @@ class EnrollChild extends StatelessWidget {
                 const TextField(
                   obscureText: false,
                   decoration: InputDecoration(
-                      border: OutlineInputBorder(), labelText: "First Name"),
+                      border: UnderlineInputBorder(), labelText: "First Name"),
                 ),
                 const SizedBox(
                   height: 20,
