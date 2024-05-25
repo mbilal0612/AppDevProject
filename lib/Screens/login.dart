@@ -16,11 +16,16 @@ class LoginPage extends StatefulWidget {
 class _LoginPageState extends State<LoginPage> {
   final AuthService _authService = AuthService();
 
+  bool _hidden = true;
+
   void loginGoogle() async {
     print("Attempting login");
     //login with google
     User? user = await _authService.signInWithGoogle();
     if (user != null) {
+
+      //to make sure that the widget is mounted when we switch contexts
+      if(!mounted) return;
       Navigator.pushAndRemoveUntil(context,
           MaterialPageRoute(builder: (context) {
         return const HomePage(title: "Homepage");
@@ -68,9 +73,10 @@ class _LoginPageState extends State<LoginPage> {
                     ),
                   ),
 
+                  //Email Field
                   //perfected the input fields
                   const Padding(
-                    padding: EdgeInsets.all(16.0),
+                    padding: EdgeInsets.fromLTRB(16.0, 16.0, 16.0, 4.0),
                     child: TextField(
                       obscureText: false,
                       decoration: InputDecoration(
@@ -91,12 +97,23 @@ class _LoginPageState extends State<LoginPage> {
                   ),
 
                   //password textfield
-                  const TextField(
-                    obscureText: true,
-                    decoration: InputDecoration(
-                        border: UnderlineInputBorder(),
-                        labelText: "Password",
-                        suffixIcon: Icon(Icons.lock)),
+                  Padding(
+                    padding: const EdgeInsets.fromLTRB(16.0, 0, 16.0, 16.0),
+                    child: TextField(
+                      
+                      obscureText: _hidden,
+                      decoration: InputDecoration(
+                          suffixIcon: IconButton(onPressed: (){}, icon:const Icon(Icons.lock)),
+                          focusColor:const Color(0xFF898989),
+                          focusedBorder: const UnderlineInputBorder(
+                              borderSide: BorderSide(color: Color(0xFF898989))),
+                          border: const UnderlineInputBorder(
+                              borderSide: BorderSide(color: Color(0xFF898989))),
+                          labelText: "Password",
+                          floatingLabelStyle: const TextStyle(
+                            color: Color(0xFF898989),
+                          )),
+                    ),
                   ),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.start,
@@ -129,6 +146,20 @@ class _LoginPageState extends State<LoginPage> {
                       child: const Center(
                         child: Text(
                           "Login",
+                          style: TextStyle(color: Colors.white),
+                        ),
+                      )),
+                  
+
+                  // login with Google button
+                   OutlinedButton(
+                      onPressed: loginGoogle,
+                      style: OutlinedButton.styleFrom(
+                          shape: const RoundedRectangleBorder(),
+                          backgroundColor: const Color(0xFF587CF4)),
+                      child: const Center(
+                        child: Text(
+                          "Login with Google",
                           style: TextStyle(color: Colors.white),
                         ),
                       )),
@@ -175,9 +206,7 @@ class _LoginPageState extends State<LoginPage> {
                         ),
                       )),
 
-                  TextButton(
-                      onPressed: loginGoogle,
-                      child: const Text("Login with Google"))
+                 
                 ],
               ),
             ),

@@ -59,4 +59,5 @@ class DefaultFirebaseOptions {
     projectId: 'kidsync-4fb6e',
     storageBucket: 'kidsync-4fb6e.appspot.com',
   );
+
 }
