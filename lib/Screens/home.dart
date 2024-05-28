@@ -29,6 +29,15 @@ class HomePage extends StatelessWidget {
                 }));
               },
               child: const Text('Go Back'),
+            ),
+            TextButton(
+              onPressed: () {
+                Navigator.pop(context);
+                Navigator.push(context, MaterialPageRoute(builder: (context) {
+                  return const LoginPage(title: "Homepage");
+                }));
+              },
+              child: const Text('Go Back'),
             )
           ],
         ),
