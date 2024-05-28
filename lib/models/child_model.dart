@@ -1,8 +1,9 @@
-class ChildModel{
+class ChildModel {
   final String fName;
   final String lName;
   final String dob;
-  final String noOfMonths;
+  final int noOfMonths;
+  //store id of current class
   final String currentClass;
   final String parentUUID;
 

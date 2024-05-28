@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:project/Screens/login.dart';
+import 'package:project/screens/login.dart';
 import 'package:firebase_core/firebase_core.dart';
 
 void main() async {
@@ -17,9 +17,8 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'Kid Sync',
       theme: ThemeData(
-        dialogBackgroundColor:const Color(0xFFE5E5E5),
+        dialogBackgroundColor: const Color(0xFFE5E5E5),
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
-        
         useMaterial3: true,
       ),
       home: const LoginPage(title: 'Flutter Page'),

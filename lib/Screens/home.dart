@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:project/Screens/enroll_child.dart';
-import 'package:project/Screens/login.dart';
+import 'package:project/screens/add_classroom.dart';
+import 'package:project/screens/enroll_child.dart';
+import 'package:project/screens/login.dart';
 
 class HomePage extends StatelessWidget {
   const HomePage({Key? key, required this.title}) : super(key: key);
@@ -22,14 +23,12 @@ class HomePage extends StatelessWidget {
                 },
                 child: const Text('Enroll Child')),
             TextButton(
-              onPressed: () {
-                Navigator.pop(context);
-                Navigator.push(context, MaterialPageRoute(builder: (context) {
-                  return const LoginPage(title: "Homepage");
-                }));
-              },
-              child: const Text('Go Back'),
-            ),
+                onPressed: () {
+                  Navigator.push(context, MaterialPageRoute(builder: (context) {
+                    return AddClassroom(title: "Add classroom");
+                  }));
+                },
+                child: const Text('Add Classroom')),
             TextButton(
               onPressed: () {
                 Navigator.pop(context);

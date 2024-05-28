@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:project/Screens/add_to_classroom.dart';
+import 'package:project/screens/add_to_classroom.dart';
 
 class EnrollChild extends StatelessWidget {
   const EnrollChild({Key? key, required this.title}) : super(key: key);

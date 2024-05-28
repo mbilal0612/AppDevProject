@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:project/Screens/home.dart';
+import 'package:project/screens/home.dart';
 
 class Addtoclassroom extends StatefulWidget {
   Addtoclassroom({Key? key}) : super(key: key);
@@ -30,9 +30,10 @@ class _AddtoclassroomState extends State<Addtoclassroom> {
                   Center(
                       child: ElevatedButton(
                           onPressed: () {
-                            Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (context){
-                              return HomePage(title: "Homepage");
-                            }), (route)=>false);
+                            Navigator.pushAndRemoveUntil(context,
+                                MaterialPageRoute(builder: (context) {
+                              return const HomePage(title: "Homepage");
+                            }), (route) => false);
                           },
                           child: const Text("Add to Classroom")))
                 ]),
