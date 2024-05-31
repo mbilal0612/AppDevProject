@@ -138,10 +138,17 @@ class _LoginPageState extends State<LoginPage> {
                 Row(
                   mainAxisAlignment: MainAxisAlignment.start,
                   children: [
+                    const Text("Don't Have an Account?  "),
                     TextButton(
-                        onPressed: () {},
+                        onPressed: () {
+                          Navigator.pop(context);
+                          Navigator.push(context,
+                              MaterialPageRoute(builder: (context) {
+                            return const Signup(title: "Signup");
+                          }));
+                        },
                         child: const Text(
-                          "Forget Password?",
+                          "Sign up",
                           style: TextStyle(color: Colors.blue),
                         )),
                   ],
@@ -197,24 +204,24 @@ class _LoginPageState extends State<LoginPage> {
                 ),
 
                 //Signup Button
-                OutlinedButton(
-                    onPressed: () {
-                      Navigator.pop(context);
-                      Navigator.push(context,
-                          MaterialPageRoute(builder: (context) {
-                        return const Signup(title: "Signup");
-                      }));
-                    },
-                    style: OutlinedButton.styleFrom(
-                        side: const BorderSide(color: Color(0xFF587CF4)),
-                        shape: const RoundedRectangleBorder(),
-                        backgroundColor: Colors.white),
-                    child: const Center(
-                      child: Text(
-                        "Sign up",
-                        style: TextStyle(color: Color(0xFF587CF4)),
-                      ),
-                    )),
+                // OutlinedButton(
+                //     onPressed: () {
+                //       Navigator.pop(context);
+                //       Navigator.push(context,
+                //           MaterialPageRoute(builder: (context) {
+                //         return const Signup(title: "Signup");
+                //       }));
+                //     },
+                //     style: OutlinedButton.styleFrom(
+                //         side: const BorderSide(color: Color(0xFF587CF4)),
+                //         shape: const RoundedRectangleBorder(),
+                //         backgroundColor: Colors.white),
+                //     child: const Center(
+                //       child: Text(
+                //         "Sign up",
+                //         style: TextStyle(color: Color(0xFF587CF4)),
+                //       ),
+                //     )),
               ],
             ),
           ),

@@ -1,5 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:project/Screens/view_classroom.dart';
+import 'package:project/Screens/view_classrooms.dart';
+import 'package:project/screens/view_children.dart';
 import 'package:project/screens/add_classroom.dart';
+import 'package:project/screens/add_parent.dart';
 import 'package:project/screens/enroll_child.dart';
 import 'package:project/screens/login.dart';
 
@@ -18,17 +22,38 @@ class HomePage extends StatelessWidget {
             TextButton(
                 onPressed: () {
                   Navigator.push(context, MaterialPageRoute(builder: (context) {
-                    return const EnrollChild(title: "Enroll Child");
+                    return EnrollChild();
                   }));
                 },
                 child: const Text('Enroll Child')),
             TextButton(
                 onPressed: () {
                   Navigator.push(context, MaterialPageRoute(builder: (context) {
-                    return AddClassroom(title: "Add classroom");
+                    return const AddClassroom(title: "Add classroom");
                   }));
                 },
                 child: const Text('Add Classroom')),
+            TextButton(
+                onPressed: () {
+                  Navigator.push(context, MaterialPageRoute(builder: (context) {
+                    return const ViewClassrooms();
+                  }));
+                },
+                child: const Text('View all Classrooms')),
+            // TextButton(
+            //     onPressed: () {
+            //       Navigator.push(context, MaterialPageRoute(builder: (context) {
+            //         return const ViewStudent();
+            //       }));
+            //     },
+            //     child: const Text('View all students')),
+            TextButton(
+                onPressed: () {
+                  Navigator.push(context, MaterialPageRoute(builder: (context) {
+                    return const AddParent();
+                  }));
+                },
+                child: const Text('Add Parent')),
             TextButton(
               onPressed: () {
                 Navigator.pop(context);

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:project/screens/add_to_classroom.dart';
+import 'package:project/screens/home.dart';
 import 'package:project/service/classroom_service.dart';
 
 class AddClassroom extends StatefulWidget {
@@ -146,17 +147,18 @@ class _AddClassroomState extends State<AddClassroom> {
                                   content: Text('Processing Data: ')));
 
                           bool success = await classroomService.addClassroom(
-                              _nameController.text,
-                              int.parse(_startMonthController.text),
-                              int.parse(_durationController.text),
-                              int.parse(_capacityController.text),
-                              int.parse(_waitListController.text));
+                              _nameController.text.trim(),
+                              int.parse(_startMonthController.text.trim()),
+                              int.parse(_durationController.text.trim()),
+                              int.parse(_capacityController.text.trim()),
+                              int.parse(_waitListController.text.trim()),
+                              int.parse(_durationController.text.trim()));
 
                           if (success) {
                             if (!mounted) return;
                             Navigator.pushAndRemoveUntil(context,
                                 MaterialPageRoute(builder: (context) {
-                              return Addtoclassroom();
+                              return const HomePage(title: 'Home');
                             }), (route) => false);
                           } else {
                             if (!mounted) return;

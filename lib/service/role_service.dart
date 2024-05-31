@@ -5,10 +5,10 @@ class RoleService {
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
 
   //return true if successfull
-  Future<bool> addUserRole(String uuid, Role role) async {
+  Future<bool> addUserRole(String? email, Role role) async {
     try {
-      await _firestore.collection('user_role').doc(uuid).set({
-        'uuid': uuid,
+      await _firestore.collection('user_role').doc(email).set({
+        'uuid': email,
         'role': role,
       });
       return true;

@@ -1,80 +1,163 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:project/provider/parent_provider.dart';
 import 'package:project/screens/add_to_classroom.dart';
+import 'package:project/service/child_service.dart';
 
-class EnrollChild extends StatelessWidget {
-  const EnrollChild({Key? key, required this.title}) : super(key: key);
-  final String title;
+//to save the current state
+class SelectedEmailNotifier extends StateNotifier<String> {
+  SelectedEmailNotifier() : super("");
+
+  void setEmail(String value) {
+    state = value;
+  }
+
+  String get selectedEmail => state;
+}
+
+//create provider for the state
+final selectedEmailProvider =
+    StateNotifierProvider<SelectedEmailNotifier, String>((ref) {
+  return SelectedEmailNotifier();
+});
+
+class EnrollChild extends ConsumerWidget {
+  final _formKey = GlobalKey<FormState>();
+  final TextEditingController _firstNameController = TextEditingController();
+  final TextEditingController _lastNameController = TextEditingController();
+  DateTime? _selectedDate;
+
+  EnrollChild({super.key});
+
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
+    final parentEmailNotifier = ref.watch(getAllParentsEmailsProvider);
+    final selectedEmail = ref.watch(selectedEmailProvider);
+
     return Scaffold(
         appBar: AppBar(
-          title: const Text('Sign-In'),
+          title: const Text('Add Child'),
         ),
         body: SafeArea(
             child: SingleChildScrollView(
-          child: Padding(
-            padding: const EdgeInsets.all(8),
-            child: Column(
-              children: [
-                const TextField(
-                  obscureText: false,
-                  decoration: InputDecoration(
-                      border: UnderlineInputBorder(), labelText: "First Name"),
-                ),
-                const SizedBox(
-                  height: 20,
-                ),
-                const TextField(
-                  obscureText: false,
-                  decoration: InputDecoration(
-                      border: OutlineInputBorder(), labelText: "Last Name"),
-                ),
-                const SizedBox(
-                  height: 20,
-                ),
-                InputDatePickerFormField(
-                    firstDate: DateTime(2000), lastDate: DateTime.now()),
-                const SizedBox(
-                  height: 40,
-                ),
-                ElevatedButton(
-                    onPressed: () {
-                      //if child enrolled succesfully, move to enrol child to class page
-                      Navigator.pushAndRemoveUntil(context,
-                          MaterialPageRoute(builder: (context) {
-                        return Addtoclassroom();
-                      }), (route) => false);
-                    },
-                    child: const Text("Add Child"))
-              ],
-            ),
-          ),
-        )));
+                child: Padding(
+          padding: const EdgeInsets.all(8),
+          child: switch (parentEmailNotifier) {
+            AsyncData(:final value) => Form(
+                key: _formKey,
+                child: Column(
+                  children: [
+                    TextFormField(
+                      controller: _firstNameController,
+                      decoration: const InputDecoration(
+                          border: UnderlineInputBorder(),
+                          labelText: "First Name"),
+                      validator: (value) {
+                        if (value == null || value.isEmpty) {
+                          return 'Please enter your first name';
+                        }
+                        return null;
+                      },
+                    ),
+                    const SizedBox(
+                      height: 20,
+                    ),
+                    TextFormField(
+                      controller: _lastNameController,
+                      decoration: const InputDecoration(
+                          border: OutlineInputBorder(), labelText: "Last Name"),
+                      validator: (value) {
+                        if (value == null || value.isEmpty) {
+                          return 'Please enter your first name';
+                        }
+                        return null;
+                      },
+                    ),
+                    const SizedBox(
+                      height: 20,
+                    ),
+                    InputDatePickerFormField(
+                      firstDate: DateTime(2000),
+                      lastDate: DateTime.now(),
+                      initialDate: DateTime.now(),
+                      onDateSaved: (date) {
+                        _selectedDate = date;
+                      },
+                      onDateSubmitted: (date) {
+                        _selectedDate = date;
+                      },
+                      errorInvalidText: "Please enter a valid",
+                    ),
+                    const SizedBox(
+                      height: 40,
+                    ),
+                    DropdownMenu(
+                      dropdownMenuEntries:
+                          value.map<DropdownMenuEntry<String>>((v) {
+                        return DropdownMenuEntry<String>(
+                            value: v.email, label: v.email);
+                      }).toList(),
+                      onSelected: (value) {
+                        ref
+                            .read(selectedEmailProvider.notifier)
+                            .setEmail(value ?? "");
+                      },
+                    ),
+                    const SizedBox(
+                      height: 40,
+                    ),
+                    ElevatedButton(
+                        onPressed: () async {
+                          //if child enrolled succesfully, move to enroll child to class page
+                          try {
+                            if (_formKey.currentState!.validate()) {
+                              //to save the date if it is not changed
+                              _formKey.currentState!.save();
+                              // If the form is valid, process the data.
+                              ScaffoldMessenger.of(context).showSnackBar(
+                                  const SnackBar(
+                                      content: Text('Processing Data: ')));
 
-    // return SafeArea(
-    //     child: Scaffold(
-    //   body: Column(children: [
-    //     const Text(
-    //       "Sign In",
-    //       style: TextStyle(
-    //           fontFamily: 'Poppins', fontSize: 24, fontWeight: FontWeight.w600),
-    //     ),
-    //     const Divider(
-    //       thickness: 2.0,
-    //       indent: 100.0,
-    //       endIndent: 14.0,
-    //       color: Colors.blue,
-    //     ),
-    //     TextButton(
-    //       onPressed: () {
-    //         Navigator.pop(context);
-    //         Navigator.push(context, MaterialPageRoute(builder: (context) {
-    //           return const LoginPage(title: "Login");
-    //         }));
-    //       },
-    //       child: const Text('Go Back'),
-    //     )
-    //   ]),
-    // ));
+                              String success = await ChildService().addChild(
+                                    _firstNameController.text,
+                                    _lastNameController.text,
+                                    _selectedDate!,
+                                    ref
+                                        .read(selectedEmailProvider.notifier)
+                                        .selectedEmail,
+                                  ) ??
+                                  "";
+
+                              if (success.isNotEmpty) {
+                                Navigator.pushAndRemoveUntil(context,
+                                    MaterialPageRoute(builder: (context) {
+                                  return AddToClassroom(uuid: success);
+                                }), (route) => false);
+                              } else {
+                                ScaffoldMessenger.of(context)
+                                    .showSnackBar(const SnackBar(
+                                  content: Text('Error '),
+                                  backgroundColor: Colors.redAccent,
+                                ));
+                              }
+
+                              // Here you can also send the data to a server or save it in a database.
+                            }
+                          } catch (e) {
+                            ScaffoldMessenger.of(context).showSnackBar(
+                                const SnackBar(content: Text('Error ')));
+                          }
+                        },
+                        child: const Text("Add Child"))
+                  ],
+                ),
+              ),
+            AsyncError(:final error) => Text(error.toString()),
+            _ => const Center(
+                child: CircularProgressIndicator(),
+              )
+          },
+        ))));
   }
 }

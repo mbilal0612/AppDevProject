@@ -27,7 +27,7 @@ class _SignupPageState extends State<Signup> {
     User? user = await _authService.registerWithEmail(email, password);
     if (user != null) {
       //to make sure that the widget is mounted when we switch contexts
-      bool roleAdded = await _roleService.addUserRole(user.uid, Role.admin);
+      bool roleAdded = await _roleService.addUserRole(user.email, Role.admin);
       //check if role added was successful
       if (!roleAdded) {
         _authService.deleteEmail(user);

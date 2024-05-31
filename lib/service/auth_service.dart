@@ -58,7 +58,7 @@ class AuthService {
 
   Future<bool> deleteEmail(User user) async {
     try {
-      var isDeleted = await user.delete();
+      await user.delete();
       return true;
     } catch (e) {
       print(e);
