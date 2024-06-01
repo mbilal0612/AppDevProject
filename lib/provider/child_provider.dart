@@ -11,3 +11,9 @@ Future<List<ChildModel>> getChildrenInClassroom(
     GetChildrenInClassroomRef ref, String classroom) {
   return ChildService().getChildrenInClass(classroom);
 }
+
+@riverpod
+Future<List<ChildModel>> getChildrenByParentEmail(
+    GetChildrenInClassroomRef ref, String email) {
+  return ChildService().getChildByParentEmail(email);
+}

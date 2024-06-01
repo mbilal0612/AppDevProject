@@ -1,4 +1,7 @@
+import 'dart:ffi';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:project/models/child_model.dart';
 import 'package:project/models/classroom_model.dart';
 
 class ClassroomService {
@@ -33,6 +36,7 @@ class ClassroomService {
           "duration": duration,
           "capacity": capacity,
           "waitlistCapcity": waitlistCapacity,
+          "waitList": []
         });
         return true;
       } else {
@@ -42,6 +46,64 @@ class ClassroomService {
     } catch (e) {
       print("There was an error in adding the class to firestore:$e");
       return false;
+    }
+  }
+
+  //
+  //get class current number of students return -1 if error
+  Future<int> addToClassComplete(String uuid, String currentClass) async {
+    try {
+      QuerySnapshot<Map<String, dynamic>> snapshot = await _firestore
+          .collection('childs')
+          .where('currentClass', isEqualTo: currentClass)
+          .where('isWaitListed', isEqualTo: false)
+          .get();
+
+      List<ChildModel> childList = snapshot.docs
+          .map((doc) => ChildModel.fromQuerySnapshot(doc))
+          .toList();
+
+      int currentlyEnrolled = childList.length;
+
+      DocumentSnapshot<Map<String, dynamic>> clss =
+          await _firestore.collection('classrooms').doc(currentClass).get();
+
+      List<dynamic> newWaitList = clss['waitList'] as List<dynamic>;
+      List<String> stringList = newWaitList.map((w) => w.toString()).toList();
+
+      clss['waitList'].map((w) => w.toString()).toList();
+
+      ClassroomModel classroomModel = ClassroomModel(
+          name: clss['name'],
+          startMonth: clss['startMonth'],
+          noOfMonths: clss['noOfMonths'],
+          capacity: clss['capacity'],
+          waitlistCapacity: clss['waitlistCapacity'],
+          waitList: stringList);
+
+      int waitListCount = classroomModel.waitList.length;
+
+      if (currentlyEnrolled < classroomModel.capacity) {
+        //enroll the child, add child to class
+        await _firestore.collection('childs').doc(uuid).update({
+          "currentClass": currentClass,
+        });
+        return 1;
+      } else if (waitListCount < classroomModel.waitlistCapacity) {
+        //add to waitList and waitList Student
+        await addChildToWaitList(uuid, currentClass);
+        //
+        await _firestore.collection('childs').doc(uuid).update({
+          "isWaitListed": true,
+        });
+
+        return 2;
+      }
+
+      return -1;
+    } catch (e) {
+      print("There was an error $e");
+      return -1;
     }
   }
 

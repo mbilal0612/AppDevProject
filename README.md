@@ -22,11 +22,11 @@ flows;
 
 1. Add student -> Add Student to class ->Add Parent (done)
 2. Add Classroom (done functionality)
-3. Update Classroom
+3. Update Classroom  
 3. View Classrooms -> view Classroom -> View List of Students (done till here)->  View Student
 4. View Students -> View Student
-6. Waitlisting
+6. Waitlisting (done)
  
 Parent View:
 1. Home page in which the wards are displayed.
-2. Notification
+<!-- 2. Notification -->

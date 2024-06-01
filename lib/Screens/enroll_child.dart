@@ -4,6 +4,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:project/provider/parent_provider.dart';
 import 'package:project/screens/add_to_classroom.dart';
 import 'package:project/service/child_service.dart';
+import 'package:project/service/parent_service.dart';
 
 //to save the current state
 class SelectedEmailNotifier extends StateNotifier<String> {
@@ -36,9 +37,7 @@ class EnrollChild extends ConsumerWidget {
     final selectedEmail = ref.watch(selectedEmailProvider);
 
     return Scaffold(
-        appBar: AppBar(
-          title: const Text('Add Child'),
-        ),
+        appBar: AppBar(),
         body: SafeArea(
             child: SingleChildScrollView(
                 child: Padding(
@@ -130,6 +129,11 @@ class EnrollChild extends ConsumerWidget {
                                   "";
 
                               if (success.isNotEmpty) {
+                                await ParentService().addWard(
+                                    ref
+                                        .read(selectedEmailProvider.notifier)
+                                        .selectedEmail,
+                                    success);
                                 Navigator.pushAndRemoveUntil(context,
                                     MaterialPageRoute(builder: (context) {
                                   return AddToClassroom(uuid: success);

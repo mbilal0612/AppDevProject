@@ -17,7 +17,7 @@ class ChildModel {
     required this.noOfMonths,
     required this.currentClass,
     required this.parentUUID,
-    this.isWaitListed = false,
+    required this.isWaitListed,
   });
 
   factory ChildModel.fromQuerySnapshot(QueryDocumentSnapshot doc) {
@@ -30,6 +30,7 @@ class ChildModel {
       dob: (json['dob'] as Timestamp).toDate(),
       currentClass: json['currentClass'],
       parentUUID: json["parentUUID"],
+      isWaitListed: json["isWaitListed"],
     );
   }
 }

@@ -6,10 +6,10 @@ class ParentService {
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
 
   //add parents to firebase
-  Future<void> addParent(firstName, lastName, email,
+  Future<void> addParent(String firstName, String lastName, String email,
       {List<String> wards = const []}) async {
     try {
-      await _firestore.collection('parents').doc().set({
+      await _firestore.collection('parents').doc(email).set({
         "fName": firstName,
         "lName": lastName,
         "email": email,
@@ -17,6 +17,22 @@ class ParentService {
       });
     } catch (e) {
       print("error: $e");
+    }
+  }
+
+  Future<void> addWard(String email, String wardUUID) async {
+    try {
+      DocumentSnapshot<Map<String, dynamic>> parentDocRef =
+          await _firestore.collection('parents').doc(email).get();
+
+      Parent parentModel = Parent.fromDocumentSnapshot(parentDocRef);
+
+      parentModel.wards.add(wardUUID);
+      await _firestore.collection('parents').doc(email).update({
+        "wards": parentModel.wards,
+      });
+    } catch (e) {
+      print("error $e");
     }
   }
 

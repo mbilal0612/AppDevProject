@@ -16,7 +16,7 @@ class ClassroomModel {
     required this.noOfMonths,
     required this.capacity,
     required this.waitlistCapacity,
-    this.waitList = const [],
+    required this.waitList,
   });
 
   factory ClassroomModel.fromQuerySnapshot(QueryDocumentSnapshot doc) {

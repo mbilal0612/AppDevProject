@@ -30,17 +30,17 @@ class _SystemHash {
   }
 }
 
-/// See also [getChildrenInClassroom].
-@ProviderFor(getChildrenInClassroom)
+/// See also [getChildrenByParentEmail].
+@ProviderFor(getChildrenByParentEmail)
 const getChildrenInClassroomProvider = GetChildrenInClassroomFamily();
 
-/// See also [getChildrenInClassroom].
+/// See also [getChildrenByParentEmail].
 class GetChildrenInClassroomFamily
     extends Family<AsyncValue<List<ChildModel>>> {
-  /// See also [getChildrenInClassroom].
+  /// See also [getChildrenByParentEmail].
   const GetChildrenInClassroomFamily();
 
-  /// See also [getChildrenInClassroom].
+  /// See also [getChildrenByParentEmail].
   GetChildrenInClassroomProvider call(
     String classroom,
   ) {
@@ -73,14 +73,14 @@ class GetChildrenInClassroomFamily
   String? get name => r'getChildrenInClassroomProvider';
 }
 
-/// See also [getChildrenInClassroom].
+/// See also [getChildrenByParentEmail].
 class GetChildrenInClassroomProvider
     extends AutoDisposeFutureProvider<List<ChildModel>> {
-  /// See also [getChildrenInClassroom].
+  /// See also [getChildrenByParentEmail].
   GetChildrenInClassroomProvider(
     String classroom,
   ) : this._internal(
-          (ref) => getChildrenInClassroom(
+          (ref) => getChildrenByParentEmail(
             ref as GetChildrenInClassroomRef,
             classroom,
           ),

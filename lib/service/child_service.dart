@@ -58,6 +58,24 @@ class ChildService {
     }
   }
 
+  Future<List<ChildModel>> getChildByParentEmail(email) async {
+    try {
+      QuerySnapshot<Map<String, dynamic>> docSnapshot = await _firestore
+          .collection('childs')
+          .where('parentUUID', isEqualTo: email)
+          .get();
+
+      List<ChildModel> childModels = docSnapshot.docs
+          .map((doc) => ChildModel.fromQuerySnapshot(doc))
+          .toList();
+
+      return childModels;
+    } catch (e) {
+      print("Error in getting childs details $e");
+      return [];
+    }
+  }
+
   Future<void> updateChildClass(String uuid, String currentClass) async {
     try {
       await _firestore.collection('childs').doc(uuid).update({
@@ -73,6 +91,52 @@ class ChildService {
       QuerySnapshot<Map<String, dynamic>> snapshot = await _firestore
           .collection('childs')
           .where('currentClass', isEqualTo: classroom)
+          .get();
+
+      print("ITs gettign here");
+
+      List<ChildModel> childList = snapshot.docs
+          .map((doc) => ChildModel.fromQuerySnapshot(doc))
+          .toList();
+
+      return childList;
+      // querySnapshot.map
+      // Process the querySnapshot here
+    } catch (e) {
+      print("There is an error $e");
+      return [];
+    }
+  }
+
+  Future<List<ChildModel>> getWaitListedChildrenInClass(
+      String classroom) async {
+    try {
+      QuerySnapshot<Map<String, dynamic>> snapshot = await _firestore
+          .collection('childs')
+          .where('currentClass', isEqualTo: classroom)
+          .where('isWaitListed', isEqualTo: true)
+          .get();
+
+      List<ChildModel> childList = snapshot.docs
+          .map((doc) => ChildModel.fromQuerySnapshot(doc))
+          .toList();
+
+      return childList;
+      // querySnapshot.map
+      // Process the querySnapshot here
+    } catch (e) {
+      print("There is an error $e");
+      return [];
+    }
+  }
+
+  Future<List<ChildModel>> getNotWaitListedChildrenInClass(
+      String classroom) async {
+    try {
+      QuerySnapshot<Map<String, dynamic>> snapshot = await _firestore
+          .collection('childs')
+          .where('currentClass', isEqualTo: classroom)
+          .where('isWaitListed', isEqualTo: false)
           .get();
 
       List<ChildModel> childList = snapshot.docs

@@ -4,6 +4,7 @@ import 'package:project/models/classroom_model.dart';
 import 'package:project/provider/classroom_provider.dart';
 import 'package:project/screens/home.dart';
 import 'package:project/service/child_service.dart';
+import 'package:project/service/classroom_service.dart';
 
 //to save the current state
 class SelectedClassroomNotifier extends StateNotifier<String> {
@@ -29,7 +30,7 @@ class AddToClassroom extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final classroomsNotifier = ref.watch(getAllClassroomsProvider);
-    final selectedEmail = ref.watch(selectedClassroomProvider);
+    final selectedClassroom = ref.watch(selectedClassroomProvider);
     final width = MediaQuery.of(context).size.width;
     final height = MediaQuery.of(context).size.height;
 
@@ -65,12 +66,14 @@ class AddToClassroom extends ConsumerWidget {
                     Center(
                         child: ElevatedButton(
                             onPressed: () async {
-                              if (selectedEmail.isNotEmpty) {
+                              if (selectedClassroom.isNotEmpty) {
                                 try {
                                   //update the class
-                                  await ChildService()
-                                      .updateChildClass(uuid, selectedEmail);
-                                  //push to next page
+                                  await ChildService().updateChildClass(
+                                      uuid, selectedClassroom);
+
+                                  await ClassroomService().addToClassComplete(
+                                      uuid, selectedClassroom);
 
                                   Navigator.pushAndRemoveUntil(context,
                                       MaterialPageRoute(builder: (context) {

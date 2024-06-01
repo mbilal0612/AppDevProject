@@ -27,4 +27,15 @@ class Parent {
       wards: stringList,
     );
   }
+
+  factory Parent.fromDocumentSnapshot(DocumentSnapshot doc) {
+    List<dynamic> tempList = doc['wards'] as List<dynamic>;
+    List<String> stringList = tempList.map((item) => item.toString()).toList();
+    return Parent(
+      fName: doc['fName'] as String,
+      lName: doc['lName'] as String,
+      email: doc['email'] as String,
+      wards: stringList,
+    );
+  }
 }
