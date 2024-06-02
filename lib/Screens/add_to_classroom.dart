@@ -43,49 +43,76 @@ class AddToClassroom extends ConsumerWidget {
         AsyncData(:final value) => Container(
             width: width,
             height: height,
-            child: Form(
-              child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: <Widget>[
-                    Text(uuid),
-                    DropdownMenu(
-                      dropdownMenuEntries:
-                          value!.map<DropdownMenuEntry<String>>((v) {
-                        return DropdownMenuEntry<String>(
-                            value: v.name, label: v.name);
-                      }).toList(),
-                      onSelected: (value) {
-                        ref
-                            .read(selectedClassroomProvider.notifier)
-                            .setClassroom(value ?? "");
-                      },
-                    ),
-                    const SizedBox(
-                      height: 50,
-                    ),
-                    Center(
+            child: Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Form(
+                child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: <Widget>[
+                      Text(uuid),
+                      DropdownMenu(
+                        width: width - 20,
+                        hintText: "Select a class to add to",
+                        dropdownMenuEntries:
+                            value!.map<DropdownMenuEntry<String>>((v) {
+                          return DropdownMenuEntry<String>(
+                              value: v.name, label: v.name);
+                        }).toList(),
+                        onSelected: (value) {
+                          ref
+                              .read(selectedClassroomProvider.notifier)
+                              .setClassroom(value ?? "");
+                        },
+                      ),
+                      const Expanded(child: SizedBox()),
+                      // const SizedBox(
+                      //   height: 50,
+                      // ),
+                      Center(
                         child: ElevatedButton(
-                            onPressed: () async {
-                              if (selectedClassroom.isNotEmpty) {
-                                try {
-                                  //update the class
-                                  await ChildService().updateChildClass(
-                                      uuid, selectedClassroom);
+                          onPressed: () async {
+                            if (selectedClassroom.isNotEmpty) {
+                              try {
+                                //update the class
+                                await ChildService()
+                                    .updateChildClass(uuid, selectedClassroom);
 
-                                  await ClassroomService().addToClassComplete(
-                                      uuid, selectedClassroom);
+                                await ClassroomService().addToClassComplete(
+                                    uuid, selectedClassroom);
 
-                                  Navigator.pushAndRemoveUntil(context,
-                                      MaterialPageRoute(builder: (context) {
-                                    return const HomePage(title: "Homepage");
-                                  }), (route) => false);
-                                } catch (e) {
-                                  print("Error: $e");
-                                }
+                                Navigator.pushAndRemoveUntil(context,
+                                    MaterialPageRoute(builder: (context) {
+                                  return const HomePage();
+                                }), (route) => false);
+                              } catch (e) {
+                                print("Error: $e");
                               }
-                            },
-                            child: const Text("Add to Classroom")))
-                  ]),
+                            }
+                          },
+                          style: ElevatedButton.styleFrom(
+                            shape: const RoundedRectangleBorder(
+                              borderRadius:
+                                  BorderRadius.all(Radius.circular(10.0)),
+                            ),
+                            backgroundColor: const Color(0xFF007AFF),
+                          ),
+                          child: const Padding(
+                            padding: EdgeInsets.symmetric(
+                              vertical: 15.0,
+                            ), // Adjust padding as needed
+                            child: Center(
+                              child: Text(
+                                "Add to Classroom",
+                                style: TextStyle(
+                                  color: Colors.white,
+                                ),
+                              ),
+                            ),
+                          ),
+                        ),
+                      )
+                    ]),
+              ),
             ),
           ),
         AsyncError(:final error) => Text(error.toString()),
@@ -96,42 +123,3 @@ class AddToClassroom extends ConsumerWidget {
     );
   }
 }
-
-class AddToClassForm extends StatelessWidget {
-  const AddToClassForm({
-    super.key,
-    required this.value,
-  });
-  final List<ClassroomModel> value;
-
-  @override
-  Widget build(BuildContext context) {
-    return Form(
-      child: Column(
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: <Widget>[
-            const Text("Child Name"),
-            DropdownMenu(
-              dropdownMenuEntries: value.map<DropdownMenuEntry<String>>((v) {
-                return DropdownMenuEntry<String>(value: v.name, label: v.name);
-              }).toList(),
-              onSelected: (newValue) {},
-            ),
-            const SizedBox(
-              height: 50,
-            ),
-            Center(
-                child: ElevatedButton(
-                    onPressed: () {
-                      Navigator.pushAndRemoveUntil(context,
-                          MaterialPageRoute(builder: (context) {
-                        return const HomePage(title: "Homepage");
-                      }), (route) => false);
-                    },
-                    child: const Text("Add to Classroom")))
-          ]),
-    );
-  }
-}
-
-class DropDownMenuItem {}

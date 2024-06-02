@@ -8,3 +8,9 @@ part 'classroom_provider.g.dart';
 Future<List<ClassroomModel>> getAllClassrooms(GetAllClassroomsRef ref) {
   return ClassroomService().getClassrooms();
 }
+
+@riverpod
+Future<void> removeChildFromWaitList(
+    RemoveChildFromWaitListRef ref, String uuid, String classroom) {
+  return ClassroomService().removeChildFromWaitList(uuid, classroom);
+}

@@ -7,6 +7,7 @@ import 'package:project/models/classroom_model.dart';
 class ClassroomService {
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
 
+  //get all classrooms
   Future<List<ClassroomModel>> getClassrooms() async {
     try {
       QuerySnapshot snapshot = await _firestore.collection('classrooms').get();
@@ -20,6 +21,7 @@ class ClassroomService {
     }
   }
 
+  //add a new classroom
   Future<bool> addClassroom(String name, int startMonth, int duration,
       int capacity, int waitlistCapacity, int noOfMonths) async {
     try {
@@ -49,13 +51,12 @@ class ClassroomService {
     }
   }
 
-  //
-  //get class current number of students return -1 if error
-  Future<int> addToClassComplete(String uuid, String currentClass) async {
+  //Adds to classroom if current count less than capacity otherwise waitlist otherwise return -1
+  Future<int> addToClassComplete(String uuid, String classroom) async {
     try {
       QuerySnapshot<Map<String, dynamic>> snapshot = await _firestore
           .collection('childs')
-          .where('currentClass', isEqualTo: currentClass)
+          .where('currentClass', isEqualTo: classroom)
           .where('isWaitListed', isEqualTo: false)
           .get();
 
@@ -66,7 +67,7 @@ class ClassroomService {
       int currentlyEnrolled = childList.length;
 
       DocumentSnapshot<Map<String, dynamic>> clss =
-          await _firestore.collection('classrooms').doc(currentClass).get();
+          await _firestore.collection('classrooms').doc(classroom).get();
 
       List<dynamic> newWaitList = clss['waitList'] as List<dynamic>;
       List<String> stringList = newWaitList.map((w) => w.toString()).toList();
@@ -86,12 +87,12 @@ class ClassroomService {
       if (currentlyEnrolled < classroomModel.capacity) {
         //enroll the child, add child to class
         await _firestore.collection('childs').doc(uuid).update({
-          "currentClass": currentClass,
+          "currentClass": classroom,
         });
         return 1;
       } else if (waitListCount < classroomModel.waitlistCapacity) {
         //add to waitList and waitList Student
-        await addChildToWaitList(uuid, currentClass);
+        await addChildToWaitList(uuid, classroom);
         //
         await _firestore.collection('childs').doc(uuid).update({
           "isWaitListed": true,
@@ -107,22 +108,44 @@ class ClassroomService {
     }
   }
 
-  Future<void> addChildToWaitList(String uuid, String currentClass) async {
+  Future<void> addChildToWaitList(String uuid, String classroom) async {
     try {
-      DocumentSnapshot<Map<String, dynamic>> clss =
-          await _firestore.collection('classrooms').doc(currentClass).get();
+      DocumentSnapshot<Map<String, dynamic>> docSnapshot =
+          await _firestore.collection('classrooms').doc(classroom).get();
 
       ClassroomModel classroomModel = ClassroomModel(
-          name: clss['name'],
-          startMonth: clss['startMonth'],
-          noOfMonths: clss['noOfMonths'],
-          capacity: clss['capacity'],
-          waitlistCapacity: clss['waitlistCapacity'],
-          waitList: clss['waitList']);
+          name: docSnapshot['name'],
+          startMonth: docSnapshot['startMonth'],
+          noOfMonths: docSnapshot['noOfMonths'],
+          capacity: docSnapshot['capacity'],
+          waitlistCapacity: docSnapshot['waitlistCapacity'],
+          waitList: docSnapshot['waitList']);
 
       classroomModel.waitList.add(uuid);
 
-      await _firestore.collection('classrooms').doc(currentClass).update({
+      await _firestore.collection('classrooms').doc(classroom).update({
+        "waitList": classroomModel.waitList,
+      });
+    } catch (e) {
+      print("There was an error $e");
+    }
+  }
+
+  Future<void> removeChildFromWaitList(String uuid, String classroom) async {
+    try {
+      DocumentSnapshot<Map<String, dynamic>> docSnapshot =
+          await _firestore.collection('parents').doc(classroom).get();
+
+      ClassroomModel classroomModel = ClassroomModel(
+          name: docSnapshot['name'],
+          startMonth: docSnapshot['startMonth'],
+          noOfMonths: docSnapshot['noOfMonths'],
+          capacity: docSnapshot['capacity'],
+          waitlistCapacity: docSnapshot['waitlistCapacity'],
+          waitList: docSnapshot['waitList']);
+
+      classroomModel.waitList.remove(uuid);
+      await _firestore.collection('classrooms').doc(classroom).update({
         "waitList": classroomModel.waitList,
       });
     } catch (e) {

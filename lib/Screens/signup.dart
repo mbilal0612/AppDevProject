@@ -39,7 +39,7 @@ class _SignupPageState extends State<Signup> {
         if (!mounted) return;
         Navigator.pushAndRemoveUntil(context,
             MaterialPageRoute(builder: (context) {
-          return const HomePage(title: "Homepage");
+          return const HomePage();
         }), (route) => false);
       }
     } else {

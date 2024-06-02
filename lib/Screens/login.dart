@@ -17,6 +17,9 @@ class _LoginPageState extends State<LoginPage> {
   final AuthService _authService = AuthService();
 
   bool _hidden = true;
+  final _formKey = GlobalKey<FormState>();
+  var emailController = TextEditingController();
+  var passwordController = TextEditingController();
 
   void loginGoogle() async {
     print("Attempting login");
@@ -27,7 +30,7 @@ class _LoginPageState extends State<LoginPage> {
       if (!mounted) return;
       Navigator.pushAndRemoveUntil(context,
           MaterialPageRoute(builder: (context) {
-        return const HomePage(title: "Homepage");
+        return const HomePage();
       }), (route) => false);
     } else {
       print("There was an error: user == null");
@@ -43,7 +46,7 @@ class _LoginPageState extends State<LoginPage> {
       if (!mounted) return;
       Navigator.pushAndRemoveUntil(context,
           MaterialPageRoute(builder: (context) {
-        return const HomePage(title: "Homepage");
+        return const HomePage();
       }), (route) => false);
     } else {
       if (!mounted) return;
@@ -55,174 +58,230 @@ class _LoginPageState extends State<LoginPage> {
 
   @override
   Widget build(BuildContext context) {
-    var emailController = TextEditingController();
-    var passwordController = TextEditingController();
+    passwordController.text = "";
     return Scaffold(
       body: SafeArea(
         child: SingleChildScrollView(
           child: Padding(
-            padding: const EdgeInsets.all(8),
-            child: Column(
-              children: <Widget>[
-                const Row(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  children: [
-                    Padding(
-                      padding: EdgeInsets.fromLTRB(10, 10, 10, 0),
-                      child: Text(
-                        "Login ",
-                        style: TextStyle(
-                          fontSize: 24,
-                          fontWeight: FontWeight.w600,
+            padding: const EdgeInsets.all(15),
+            child: Form(
+              key: _formKey,
+              child: Column(
+                children: <Widget>[
+                  const Row(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    children: [
+                      Padding(
+                        padding: EdgeInsets.fromLTRB(10, 10, 10, 0),
+                        child: Text(
+                          "Login ",
+                          style: TextStyle(
+                            fontSize: 24,
+                            fontWeight: FontWeight.w600,
+                          ),
                         ),
                       ),
-                    ),
-                  ],
-                ),
-                const Padding(
-                  padding: EdgeInsets.only(top: 0),
-                  child: Divider(
-                    color: Colors.blue, // Optional: specify color
-                    height: 2, // Optional: specify height
-                    thickness: 2, // Optional: specify thickness
-                    indent: 10, // Optional: specify indent (left padding)
-                    endIndent:
-                        315, // Optional: specify endIndent (right padding)
+                    ],
                   ),
-                ),
-
-                //Email Field
-                //perfected the input fields
-                Padding(
-                  padding: const EdgeInsets.fromLTRB(16.0, 16.0, 16.0, 4.0),
-                  child: TextField(
-                    controller: emailController,
-                    obscureText: false,
-                    decoration: const InputDecoration(
+                  const Padding(
+                    padding: EdgeInsets.only(top: 0),
+                    child: Divider(
+                      color: Colors.blue,
+                      height: 2,
+                      thickness: 2,
+                      indent: 10,
+                      endIndent: 315,
+                    ),
+                  ),
+                  const SizedBox(
+                    height: 10,
+                  ),
+                  //Email Field
+                  //perfected the input fields
+                  Padding(
+                    padding: const EdgeInsets.symmetric(vertical: 5),
+                    child: TextFormField(
+                      controller: emailController,
+                      obscureText: false,
+                      decoration: const InputDecoration(
+                        prefixIcon: Icon(Icons.email),
                         focusColor: Color(0xFF898989),
-                        focusedBorder: UnderlineInputBorder(
-                            borderSide: BorderSide(color: Color(0xFF898989))),
-                        border: UnderlineInputBorder(
-                            borderSide: BorderSide(color: Color(0xFF898989))),
+                        focusedBorder: OutlineInputBorder(
+                          borderSide: BorderSide(color: Color(0xFF898989)),
+                        ),
+                        border: OutlineInputBorder(
+                          borderSide: BorderSide(color: Color(0xFF898989)),
+                        ),
                         labelText: "Email",
                         floatingLabelStyle: TextStyle(
                           color: Color(0xFF898989),
-                        )),
-                  ),
-                ),
-                const SizedBox(
-                  width: 100,
-                  height: 20,
-                ),
+                        ),
+                      ),
+                      validator: (value) {
+                        if (value == null || value.isEmpty) {
+                          return 'Please enter your email';
+                        }
+                        final emailRegex = RegExp(
+                          r'^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$',
+                          caseSensitive: false,
+                        );
+                        if (!emailRegex.hasMatch(value)) {
+                          return 'Please enter a valid email address';
+                        }
 
-                //password textfield
-                Padding(
-                  padding: const EdgeInsets.fromLTRB(16.0, 0, 16.0, 16.0),
-                  child: TextField(
-                    controller: passwordController,
-                    obscureText: _hidden,
-                    decoration: InputDecoration(
+                        return null;
+                      },
+                    ),
+                  ),
+
+                  //password textfield
+                  Padding(
+                    padding: const EdgeInsets.symmetric(vertical: 20),
+                    child: TextFormField(
+                      validator: (value) {
+                        if (value == null || value.isEmpty) {
+                          return 'Please enter your email';
+                        }
+
+                        return null;
+                      },
+                      controller: passwordController,
+                      obscureText: _hidden,
+                      decoration: InputDecoration(
+                        prefixIcon: const Icon(Icons.key),
                         suffixIcon: IconButton(
-                            onPressed: () {}, icon: const Icon(Icons.lock)),
+                            onPressed: () {
+                              setState(() {
+                                _hidden = !_hidden;
+                                passwordController.text =
+                                    passwordController.text ?? "";
+                              });
+                            },
+                            icon: _hidden
+                                ? const Icon(Icons.lock)
+                                : const Icon(Icons.lock_open_rounded)),
                         focusColor: const Color(0xFF898989),
-                        focusedBorder: const UnderlineInputBorder(
+                        focusedBorder: const OutlineInputBorder(
                             borderSide: BorderSide(color: Color(0xFF898989))),
-                        border: const UnderlineInputBorder(
+                        border: const OutlineInputBorder(
                             borderSide: BorderSide(color: Color(0xFF898989))),
                         labelText: "Password",
                         floatingLabelStyle: const TextStyle(
                           color: Color(0xFF898989),
-                        )),
+                        ),
+                      ),
+                    ),
                   ),
-                ),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  children: [
-                    const Text("Don't Have an Account?  "),
-                    TextButton(
-                        onPressed: () {
-                          Navigator.pop(context);
-                          Navigator.push(context,
-                              MaterialPageRoute(builder: (context) {
-                            return const Signup(title: "Signup");
-                          }));
-                        },
-                        child: const Text(
-                          "Sign up",
-                          style: TextStyle(color: Colors.blue),
-                        )),
-                  ],
-                ),
-                const SizedBox(
-                  width: 100,
-                  height: 20,
-                ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    children: [
+                      const Text("Don't Have an Account?"),
+                      TextButton(
+                          onPressed: () {
+                            Navigator.pop(context);
+                            Navigator.push(context,
+                                MaterialPageRoute(builder: (context) {
+                              return const Signup(title: "Signup");
+                            }));
+                          },
+                          child: const Text(
+                            "Sign up",
+                            style: TextStyle(color: Colors.blue),
+                          )),
+                    ],
+                  ),
+                  const SizedBox(
+                    width: 100,
+                    height: 20,
+                  ),
 
-                //Login Button
-                OutlinedButton(
-                    onPressed: () => loginEmail(emailController.text.trim(),
-                        emailController.text.trim()),
-                    style: OutlinedButton.styleFrom(
-                        shape: const RoundedRectangleBorder(),
-                        backgroundColor: const Color(0xFF587CF4)),
-                    child: const Center(
-                      child: Text(
-                        "Login",
-                        style: TextStyle(color: Colors.white),
+                  //Login Button
+                  ElevatedButton(
+                    onPressed: () {
+                      if (_formKey.currentState!.validate()) {
+                        loginEmail(
+                          emailController.text.trim(),
+                          emailController.text.trim(),
+                        );
+                      }
+                    },
+                    style: ElevatedButton.styleFrom(
+                      shape: const RoundedRectangleBorder(
+                        borderRadius: BorderRadius.all(Radius.circular(10.0)),
                       ),
-                    )),
-
-                // login with Google button
-                OutlinedButton(
-                    onPressed: loginGoogle,
-                    style: OutlinedButton.styleFrom(
-                        shape: const RoundedRectangleBorder(),
-                        backgroundColor: const Color(0xFF587CF4)),
-                    child: const Center(
-                      child: Text(
-                        "Login with Google",
-                        style: TextStyle(color: Colors.white),
-                      ),
-                    )),
-
-                const Row(
-                  children: [
-                    Expanded(
-                      child: Divider(
-                        color: Colors.grey,
-                        thickness: 1.0,
+                      backgroundColor: const Color(0xFF007AFF),
+                    ),
+                    child: const Padding(
+                      padding: EdgeInsets.symmetric(
+                        vertical: 15.0,
+                      ), // Adjust padding as needed
+                      child: Center(
+                        child: Text(
+                          "Login",
+                          style: TextStyle(
+                            color: Colors.white,
+                          ),
+                        ),
                       ),
                     ),
-                    Text("  or  "),
-                    Expanded(
-                      child: Divider(
-                        color: Colors.grey,
-                        thickness: 1.0,
-                      ),
-                    ),
-                  ],
-                ),
+                  ),
 
-                //Signup Button
-                // OutlinedButton(
-                //     onPressed: () {
-                //       Navigator.pop(context);
-                //       Navigator.push(context,
-                //           MaterialPageRoute(builder: (context) {
-                //         return const Signup(title: "Signup");
-                //       }));
-                //     },
-                //     style: OutlinedButton.styleFrom(
-                //         side: const BorderSide(color: Color(0xFF587CF4)),
-                //         shape: const RoundedRectangleBorder(),
-                //         backgroundColor: Colors.white),
-                //     child: const Center(
-                //       child: Text(
-                //         "Sign up",
-                //         style: TextStyle(color: Color(0xFF587CF4)),
-                //       ),
-                //     )),
-              ],
+                  const Padding(
+                    padding: EdgeInsets.all(16.0),
+                    child: Row(
+                      children: [
+                        Expanded(
+                          child: Divider(
+                            color: Colors.grey,
+                            thickness: 1.0,
+                          ),
+                        ),
+                        Text("  or  "),
+                        Expanded(
+                          child: Divider(
+                            color: Colors.grey,
+                            thickness: 1.0,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+
+                  // login with Google button
+                  ElevatedButton(
+                      onPressed: loginGoogle,
+                      style: ElevatedButton.styleFrom(
+                          shape: const RoundedRectangleBorder(
+                              borderRadius:
+                                  BorderRadius.all(Radius.circular(10.0))),
+                          backgroundColor: const Color(0xFF007AFF)),
+                      child: const Center(
+                        child: Text(
+                          "Login with Google",
+                          style: TextStyle(color: Colors.white),
+                        ),
+                      )),
+                  //Signup Button
+                  // OutlinedButton(
+                  //     onPressed: () {
+                  //       Navigator.pop(context);
+                  //       Navigator.push(context,
+                  //           MaterialPageRoute(builder: (context) {
+                  //         return const Signup(title: "Signup");
+                  //       }));
+                  //     },
+                  //     style: OutlinedButton.styleFrom(
+                  //         side: const BorderSide(color: Color(0xFF587CF4)),
+                  //         shape: const RoundedRectangleBorder(),
+                  //         backgroundColor: Colors.white),
+                  //     child: const Center(
+                  //       child: Text(
+                  //         "Sign up",
+                  //         style: TextStyle(color: Color(0xFF587CF4)),
+                  //       ),
+                  //     )),
+                ],
+              ),
             ),
           ),
         ),

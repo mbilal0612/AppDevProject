@@ -27,7 +27,7 @@ class _AddParentState extends State<AddParent> {
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
-          title: const Text('Add Classroom'),
+          title: const Text('Add Parent'),
         ),
         body: SafeArea(
             child: SingleChildScrollView(
@@ -81,38 +81,57 @@ class _AddParentState extends State<AddParent> {
                     height: 40,
                   ),
                   ElevatedButton(
-                      onPressed: () async {
-                        //if child enrolled succesfully, move to enroll child to class page
-                        try {
-                          if (_formKey.currentState!.validate()) {
-                            //to save the date if it is not changed
-                            _formKey.currentState!.save();
-                            // If the form is valid, process the data.
-                            ScaffoldMessenger.of(context).showSnackBar(
-                                const SnackBar(
-                                    content: Text('Processing Data: ')));
-
-                            await ParentService().addParent(
-                                _firstNameController.text.trim(),
-                                _lastNameController.text.trim(),
-                                _emailController.text.trim());
-
-                            if (!mounted) return;
-                            Navigator.pushAndRemoveUntil(context,
-                                MaterialPageRoute(builder: (context) {
-                              return HomePage(title: 'Homepage');
-                            }), (route) => false);
-
-                            // Here you can also send the data to a server or save it in a database.
-                          }
-                        } catch (e) {
-                          if (!mounted) return;
-
+                    onPressed: () async {
+                      //if child enrolled succesfully, move to enroll child to class page
+                      try {
+                        if (_formKey.currentState!.validate()) {
+                          //to save the date if it is not changed
+                          _formKey.currentState!.save();
+                          // If the form is valid, process the data.
                           ScaffoldMessenger.of(context).showSnackBar(
-                              const SnackBar(content: Text('Error ')));
+                              const SnackBar(
+                                  content: Text('Processing Data: ')));
+
+                          await ParentService().addParent(
+                              _firstNameController.text.trim(),
+                              _lastNameController.text.trim(),
+                              _emailController.text.trim());
+
+                          if (!mounted) return;
+                          Navigator.pushAndRemoveUntil(context,
+                              MaterialPageRoute(builder: (context) {
+                            return HomePage();
+                          }), (route) => false);
+
+                          // Here you can also send the data to a server or save it in a database.
                         }
-                      },
-                      child: const Text("Add Parent"))
+                      } catch (e) {
+                        if (!mounted) return;
+
+                        ScaffoldMessenger.of(context).showSnackBar(
+                            const SnackBar(content: Text('Error ')));
+                      }
+                    },
+                    style: ElevatedButton.styleFrom(
+                      shape: const RoundedRectangleBorder(
+                        borderRadius: BorderRadius.all(Radius.circular(10.0)),
+                      ),
+                      backgroundColor: const Color(0xFF007AFF),
+                    ),
+                    child: const Padding(
+                      padding: EdgeInsets.symmetric(
+                        vertical: 15.0,
+                      ), // Adjust padding as needed
+                      child: Center(
+                        child: Text(
+                          "Add Parent",
+                          style: TextStyle(
+                            color: Colors.white,
+                          ),
+                        ),
+                      ),
+                    ),
+                  )
                 ],
               ),
             ),

@@ -151,4 +151,25 @@ class ChildService {
       return [];
     }
   }
+
+  Future<int> getNotWaitListedChildrenInClassCount(String classroom) async {
+    try {
+      QuerySnapshot<Map<String, dynamic>> snapshot = await _firestore
+          .collection('childs')
+          .where('currentClass', isEqualTo: classroom)
+          .where('isWaitListed', isEqualTo: false)
+          .get();
+
+      List<ChildModel> childList = snapshot.docs
+          .map((doc) => ChildModel.fromQuerySnapshot(doc))
+          .toList();
+
+      return childList.length;
+      // querySnapshot.map
+      // Process the querySnapshot here
+    } catch (e) {
+      print("There is an error $e");
+      return -1;
+    }
+  }
 }

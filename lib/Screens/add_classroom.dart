@@ -29,7 +29,7 @@ class _AddClassroomState extends State<AddClassroom> {
         body: SafeArea(
             child: SingleChildScrollView(
           child: Padding(
-            padding: const EdgeInsets.all(8),
+            padding: const EdgeInsets.all(20),
             child: Form(
               key: _formKey,
               child: Column(
@@ -37,8 +37,7 @@ class _AddClassroomState extends State<AddClassroom> {
                   TextFormField(
                     controller: _nameController,
                     decoration: const InputDecoration(
-                        border: UnderlineInputBorder(),
-                        labelText: "Class Name"),
+                        border: OutlineInputBorder(), labelText: "Class Name"),
                   ),
                   const SizedBox(
                     height: 20,
@@ -48,8 +47,7 @@ class _AddClassroomState extends State<AddClassroom> {
                     keyboardType: TextInputType.number,
                     inputFormatters: [FilteringTextInputFormatter.digitsOnly],
                     decoration: const InputDecoration(
-                        border: UnderlineInputBorder(),
-                        labelText: "Start Month:1 for jan, 12 for dec"),
+                        border: OutlineInputBorder(), labelText: "Start"),
                     validator: (value) {
                       if (value == null || value.isEmpty) {
                         return 'Please enter a number';
@@ -57,9 +55,6 @@ class _AddClassroomState extends State<AddClassroom> {
                       final number = int.tryParse(value);
                       if (number == null) {
                         return 'Invalid number';
-                      }
-                      if (number < 1 || number > 12) {
-                        return 'Number must be between 1 and 12';
                       }
                       return null;
                     },
@@ -72,7 +67,7 @@ class _AddClassroomState extends State<AddClassroom> {
                     keyboardType: TextInputType.number,
                     inputFormatters: [FilteringTextInputFormatter.digitsOnly],
                     decoration: const InputDecoration(
-                        border: UnderlineInputBorder(),
+                        border: OutlineInputBorder(),
                         labelText: "No of Months"),
                     validator: (value) {
                       if (value == null || value.isEmpty) {
@@ -89,14 +84,14 @@ class _AddClassroomState extends State<AddClassroom> {
                     },
                   ),
                   const SizedBox(
-                    height: 40,
+                    height: 20,
                   ),
                   TextFormField(
                     controller: _capacityController,
                     keyboardType: TextInputType.number,
                     inputFormatters: [FilteringTextInputFormatter.digitsOnly],
                     decoration: const InputDecoration(
-                        border: UnderlineInputBorder(), labelText: "Capacity"),
+                        border: OutlineInputBorder(), labelText: "Capacity"),
                     validator: (value) {
                       if (value == null || value.isEmpty) {
                         return 'Please enter a number';
@@ -112,14 +107,14 @@ class _AddClassroomState extends State<AddClassroom> {
                     },
                   ),
                   const SizedBox(
-                    height: 40,
+                    height: 20,
                   ),
                   TextFormField(
                     controller: _waitListController,
                     keyboardType: TextInputType.number,
                     inputFormatters: [FilteringTextInputFormatter.digitsOnly],
                     decoration: const InputDecoration(
-                        border: UnderlineInputBorder(),
+                        border: OutlineInputBorder(),
                         labelText: "WaitList Capacity"),
                     validator: (value) {
                       if (value == null || value.isEmpty) {
@@ -139,39 +134,57 @@ class _AddClassroomState extends State<AddClassroom> {
                     height: 40,
                   ),
                   ElevatedButton(
-                      onPressed: () async {
-                        if (_formKey.currentState!.validate()) {
-                          // If the form is valid, process the data.
+                    onPressed: () async {
+                      if (_formKey.currentState!.validate()) {
+                        // If the form is valid, process the data.
+                        ScaffoldMessenger.of(context).showSnackBar(
+                            const SnackBar(content: Text('Processing Data: ')));
+
+                        bool success = await classroomService.addClassroom(
+                            _nameController.text.trim(),
+                            int.parse(_startMonthController.text.trim()),
+                            int.parse(_durationController.text.trim()),
+                            int.parse(_capacityController.text.trim()),
+                            int.parse(_waitListController.text.trim()),
+                            int.parse(_durationController.text.trim()));
+
+                        if (success) {
+                          if (!mounted) return;
+                          Navigator.pushAndRemoveUntil(context,
+                              MaterialPageRoute(builder: (context) {
+                            return const HomePage();
+                          }), (route) => false);
+                        } else {
+                          if (!mounted) return;
+
                           ScaffoldMessenger.of(context).showSnackBar(
-                              const SnackBar(
-                                  content: Text('Processing Data: ')));
-
-                          bool success = await classroomService.addClassroom(
-                              _nameController.text.trim(),
-                              int.parse(_startMonthController.text.trim()),
-                              int.parse(_durationController.text.trim()),
-                              int.parse(_capacityController.text.trim()),
-                              int.parse(_waitListController.text.trim()),
-                              int.parse(_durationController.text.trim()));
-
-                          if (success) {
-                            if (!mounted) return;
-                            Navigator.pushAndRemoveUntil(context,
-                                MaterialPageRoute(builder: (context) {
-                              return const HomePage(title: 'Home');
-                            }), (route) => false);
-                          } else {
-                            if (!mounted) return;
-
-                            ScaffoldMessenger.of(context).showSnackBar(
-                                const SnackBar(content: Text('Error ')));
-                          }
-
-                          // Here you can also send the data to a server or save it in a database.
+                              const SnackBar(content: Text('Error ')));
                         }
-                        //if child enrolled succesfully, move to enrol child to class page
-                      },
-                      child: const Text("Add Classroom"))
+
+                        // Here you can also send the data to a server or save it in a database.
+                      }
+                      //if child enrolled succesfully, move to enrol child to class page
+                    },
+                    style: ElevatedButton.styleFrom(
+                      shape: const RoundedRectangleBorder(
+                        borderRadius: BorderRadius.all(Radius.circular(10.0)),
+                      ),
+                      backgroundColor: const Color(0xFF007AFF),
+                    ),
+                    child: const Padding(
+                      padding: EdgeInsets.symmetric(
+                        vertical: 15.0,
+                      ), // Adjust padding as needed
+                      child: Center(
+                        child: Text(
+                          "Add Classroom",
+                          style: TextStyle(
+                            color: Colors.white,
+                          ),
+                        ),
+                      ),
+                    ),
+                  )
                 ],
               ),
             ),

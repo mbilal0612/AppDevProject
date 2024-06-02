@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 class ChildModel {
+  final String id;
   final String fName;
   final String lName;
   final DateTime dob;
@@ -18,6 +19,7 @@ class ChildModel {
     required this.currentClass,
     required this.parentUUID,
     required this.isWaitListed,
+    required this.id,
   });
 
   factory ChildModel.fromQuerySnapshot(QueryDocumentSnapshot doc) {
@@ -31,6 +33,7 @@ class ChildModel {
       currentClass: json['currentClass'],
       parentUUID: json["parentUUID"],
       isWaitListed: json["isWaitListed"],
+      id: doc.id,
     );
   }
 }

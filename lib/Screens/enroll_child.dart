@@ -35,78 +35,90 @@ class EnrollChild extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final parentEmailNotifier = ref.watch(getAllParentsEmailsProvider);
     final selectedEmail = ref.watch(selectedEmailProvider);
+    var width = MediaQuery.of(context).size.width;
+    // var height = MediaQuery.of(context).size.height;
 
     return Scaffold(
-        appBar: AppBar(),
+        appBar: AppBar(
+          title: const Text("Add Child"),
+          backgroundColor: const Color(0xFF007AFF),
+        ),
         body: SafeArea(
             child: SingleChildScrollView(
                 child: Padding(
           padding: const EdgeInsets.all(8),
-          child: switch (parentEmailNotifier) {
-            AsyncData(:final value) => Form(
-                key: _formKey,
-                child: Column(
-                  children: [
-                    TextFormField(
-                      controller: _firstNameController,
-                      decoration: const InputDecoration(
-                          border: UnderlineInputBorder(),
-                          labelText: "First Name"),
-                      validator: (value) {
-                        if (value == null || value.isEmpty) {
-                          return 'Please enter your first name';
-                        }
-                        return null;
-                      },
-                    ),
-                    const SizedBox(
-                      height: 20,
-                    ),
-                    TextFormField(
-                      controller: _lastNameController,
-                      decoration: const InputDecoration(
-                          border: OutlineInputBorder(), labelText: "Last Name"),
-                      validator: (value) {
-                        if (value == null || value.isEmpty) {
-                          return 'Please enter your first name';
-                        }
-                        return null;
-                      },
-                    ),
-                    const SizedBox(
-                      height: 20,
-                    ),
-                    InputDatePickerFormField(
-                      firstDate: DateTime(2000),
-                      lastDate: DateTime.now(),
-                      initialDate: DateTime.now(),
-                      onDateSaved: (date) {
-                        _selectedDate = date;
-                      },
-                      onDateSubmitted: (date) {
-                        _selectedDate = date;
-                      },
-                      errorInvalidText: "Please enter a valid",
-                    ),
-                    const SizedBox(
-                      height: 40,
-                    ),
-                    DropdownMenu(
-                      dropdownMenuEntries:
-                          value.map<DropdownMenuEntry<String>>((v) {
-                        return DropdownMenuEntry<String>(
-                            value: v.email, label: v.email);
-                      }).toList(),
-                      onSelected: (value) {
-                        ref
-                            .read(selectedEmailProvider.notifier)
-                            .setEmail(value ?? "");
-                      },
-                    ),
-                    const SizedBox(
-                      height: 40,
-                    ),
-                    ElevatedButton(
+          child: SizedBox(
+            // height: height,
+            // width: width,
+            child: switch (parentEmailNotifier) {
+              AsyncData(:final value) => Form(
+                  key: _formKey,
+                  child: Column(
+                    children: [
+                      TextFormField(
+                        controller: _firstNameController,
+                        decoration: const InputDecoration(
+                            border: OutlineInputBorder(),
+                            labelText: "First Name"),
+                        validator: (value) {
+                          if (value == null || value.isEmpty) {
+                            return 'Please enter your first name';
+                          }
+                          return null;
+                        },
+                      ),
+                      const SizedBox(
+                        height: 20,
+                      ),
+                      TextFormField(
+                        controller: _lastNameController,
+                        decoration: const InputDecoration(
+                            border: OutlineInputBorder(),
+                            labelText: "Last Name"),
+                        validator: (value) {
+                          if (value == null || value.isEmpty) {
+                            return 'Please enter your first name';
+                          }
+                          return null;
+                        },
+                      ),
+                      const SizedBox(
+                        height: 20,
+                      ),
+                      InputDatePickerFormField(
+                        firstDate: DateTime(2000),
+                        lastDate: DateTime.now(),
+                        initialDate: DateTime.now(),
+                        onDateSaved: (date) {
+                          _selectedDate = date;
+                        },
+                        onDateSubmitted: (date) {
+                          _selectedDate = date;
+                        },
+                        errorInvalidText: "Please enter a valid",
+                      ),
+                      const SizedBox(
+                        height: 20,
+                      ),
+                      DropdownMenu(
+                        width: width - 20,
+                        leadingIcon: const Icon(Icons.email),
+                        hintText: "Select Parent Email",
+                        dropdownMenuEntries:
+                            value.map<DropdownMenuEntry<String>>((v) {
+                          return DropdownMenuEntry<String>(
+                              value: v.email, label: v.email);
+                        }).toList(),
+                        onSelected: (value) {
+                          ref
+                              .read(selectedEmailProvider.notifier)
+                              .setEmail(value ?? "");
+                        },
+                      ),
+                      const SizedBox(
+                        height: 40,
+                      ),
+                      ElevatedButton(
                         onPressed: () async {
                           //if child enrolled succesfully, move to enroll child to class page
                           try {
@@ -153,15 +165,36 @@ class EnrollChild extends ConsumerWidget {
                                 const SnackBar(content: Text('Error ')));
                           }
                         },
-                        child: const Text("Add Child"))
-                  ],
+                        style: ElevatedButton.styleFrom(
+                          shape: const RoundedRectangleBorder(
+                            borderRadius:
+                                BorderRadius.all(Radius.circular(10.0)),
+                          ),
+                          backgroundColor: const Color(0xFF007AFF),
+                        ),
+                        child: const Padding(
+                          padding: EdgeInsets.symmetric(
+                            vertical: 15.0,
+                          ), // Adjust padding as needed
+                          child: Center(
+                            child: Text(
+                              "Add Child",
+                              style: TextStyle(
+                                color: Colors.white,
+                              ),
+                            ),
+                          ),
+                        ),
+                      )
+                    ],
+                  ),
                 ),
-              ),
-            AsyncError(:final error) => Text(error.toString()),
-            _ => const Center(
-                child: CircularProgressIndicator(),
-              )
-          },
+              AsyncError(:final error) => Text(error.toString()),
+              _ => const Center(
+                  child: CircularProgressIndicator(),
+                )
+            },
+          ),
         ))));
   }
 }

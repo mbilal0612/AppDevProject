@@ -13,7 +13,22 @@ class ViewClassrooms extends ConsumerWidget {
     final classroomsNotifier = ref.watch(getAllClassroomsProvider);
     final width = MediaQuery.of(context).size.width;
     final height = MediaQuery.of(context).size.height;
+
+    Color getColor(int currentCount, maxCapacity) {
+      if ((currentCount * 1.00) / (maxCapacity * 1.00) >= 0.90) {
+        return Colors.redAccent;
+      } else if ((currentCount * 1.00) / (maxCapacity * 1.00) < 0.90 &&
+          (currentCount * 1.00) / (maxCapacity * 1.00) >= 0.60) {
+        return Colors.yellowAccent;
+      } else {
+        return Colors.greenAccent;
+      }
+    }
+
     return Scaffold(
+      appBar: AppBar(
+        title: const Text("Classrooms"),
+      ),
       body: SafeArea(
           child: switch (classroomsNotifier) {
         AsyncData(:final value) => Container(
@@ -23,20 +38,95 @@ class ViewClassrooms extends ConsumerWidget {
                 itemCount: value.length,
                 itemBuilder: (context, index) {
                   print(value![index].name);
-                  return ListTile(
-                    onTap: () {
-                      Navigator.push(context,
-                          MaterialPageRoute(builder: (context) {
-                        return ViewClassroom(
-                          classroom: value[index],
-                        );
-                      }));
-                    },
-                    leading: const Icon(Icons.class_rounded),
-                    title: Text(value![index].name),
-                    trailing: const Icon(
-                      CupertinoIcons.delete_left_fill,
-                      color: Colors.red,
+                  var classroom = value[index];
+
+                  return Card(
+                    color: getColor(
+                        classroom.waitList.length, classroom.waitlistCapacity),
+                    child: Column(
+                      children: [
+                        InkWell(
+                          child: ListTile(
+                            onTap: () {
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(builder: (context) {
+                                  return ViewClassroom(
+                                    classroom: classroom,
+                                  );
+                                }),
+                              );
+                            },
+                            leading: const Icon(
+                              Icons.class_rounded,
+                              size: 50,
+                              color: Colors.white,
+                            ),
+                            title: Padding(
+                              padding: const EdgeInsets.only(top: 25),
+                              child: Text(
+                                classroom.name,
+                                style: const TextStyle(fontSize: 25.0),
+                              ),
+                            ),
+                            subtitle: Column(
+                              children: [
+                                Row(
+                                  children: [
+                                    const Text("Capacity: ",
+                                        style: TextStyle(
+                                            fontWeight: FontWeight.bold)),
+                                    Text(classroom.capacity.toString())
+                                  ],
+                                ),
+                                Row(
+                                  children: [
+                                    const Text("WaitListed: ",
+                                        style: TextStyle(
+                                            fontWeight: FontWeight.bold)),
+                                    Text(classroom.waitList.length.toString())
+                                  ],
+                                ),
+                                Row(
+                                  children: [
+                                    const Text(
+                                      "WaitList Capacity: ",
+                                      style: TextStyle(
+                                          fontWeight: FontWeight.bold),
+                                    ),
+                                    Text(classroom.waitlistCapacity.toString())
+                                  ],
+                                ),
+                              ],
+                            ),
+                            trailing: const Icon(
+                              CupertinoIcons.eye_fill,
+                              color: Colors.white,
+                            ),
+                          ),
+                        ),
+                        // Row(
+                        //   mainAxisAlignment: MainAxisAlignment.spaceAround,
+                        //   children: [
+                        //     Expanded(
+                        //       child: TextButton(
+                        //         onPressed: () {
+                        //           // Handle the first button action
+                        //         },
+                        //         child: const Text('Weight Enrolled'),
+                        //       ),
+                        //     ),
+                        //     Expanded(
+                        //       child: TextButton(
+                        //         onPressed: () {
+                        //           // Handle the second button action
+                        //         },
+                        //         child: const Text('Button 2'),
+                        //       ),
+                        //     ),
+                        //   ],
+                        // ),
+                      ],
                     ),
                   );
                 }),
