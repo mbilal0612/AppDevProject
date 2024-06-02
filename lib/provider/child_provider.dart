@@ -19,6 +19,11 @@ Future<List<ChildModel>> getChildrenByParentEmail(
 }
 
 @riverpod
+Future<ChildModel?> getChildById(GetChildByIdRef ref, String uuid) {
+  return ChildService().getChildById(uuid);
+}
+
+@riverpod
 Future<List<ChildModel>> getNotWaitListedChildrenInClass(
     GetNotWaitListedChildrenInClassRef ref, String classroom) {
   return ChildService().getNotWaitListedChildrenInClass(classroom);

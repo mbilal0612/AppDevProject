@@ -33,106 +33,117 @@ class _AddParentState extends State<AddParent> {
             child: SingleChildScrollView(
           child: Padding(
             padding: const EdgeInsets.all(8),
-            child: Form(
-              key: _formKey,
-              child: Column(
-                children: [
-                  TextFormField(
-                    controller: _firstNameController,
-                    decoration: const InputDecoration(
-                        border: UnderlineInputBorder(),
-                        labelText: "First Name"),
-                    validator: (value) {
-                      if (value == null || value.isEmpty) {
-                        return 'Please enter your first name';
-                      }
-                      return null;
-                    },
-                  ),
-                  const SizedBox(
-                    height: 20,
-                  ),
-                  TextFormField(
-                    controller: _lastNameController,
-                    decoration: const InputDecoration(
-                        border: OutlineInputBorder(), labelText: "Last Name"),
-                    validator: (value) {
-                      if (value == null || value.isEmpty) {
-                        return 'Please enter your first name';
-                      }
-                      return null;
-                    },
-                  ),
-                  const SizedBox(
-                    height: 20,
-                  ),
-                  TextFormField(
-                    controller: _emailController,
-                    decoration: const InputDecoration(
-                        border: OutlineInputBorder(), labelText: "Email"),
-                    validator: (value) {
-                      if (value == null || value.isEmpty) {
-                        return 'Please enter your email';
-                      }
-                      return null;
-                    },
-                  ),
-                  const SizedBox(
-                    height: 40,
-                  ),
-                  ElevatedButton(
-                    onPressed: () async {
-                      //if child enrolled succesfully, move to enroll child to class page
-                      try {
-                        if (_formKey.currentState!.validate()) {
-                          //to save the date if it is not changed
-                          _formKey.currentState!.save();
-                          // If the form is valid, process the data.
-                          ScaffoldMessenger.of(context).showSnackBar(
-                              const SnackBar(
-                                  content: Text('Processing Data: ')));
-
-                          await ParentService().addParent(
-                              _firstNameController.text.trim(),
-                              _lastNameController.text.trim(),
-                              _emailController.text.trim());
-
-                          if (!mounted) return;
-                          Navigator.pushAndRemoveUntil(context,
-                              MaterialPageRoute(builder: (context) {
-                            return HomePage();
-                          }), (route) => false);
-
-                          // Here you can also send the data to a server or save it in a database.
+            child: Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Form(
+                key: _formKey,
+                child: Column(
+                  children: [
+                    TextFormField(
+                      controller: _firstNameController,
+                      decoration: const InputDecoration(
+                          border: OutlineInputBorder(),
+                          labelText: "First Name"),
+                      validator: (value) {
+                        if (value == null || value.isEmpty) {
+                          return 'Please enter your first name';
                         }
-                      } catch (e) {
-                        if (!mounted) return;
-
-                        ScaffoldMessenger.of(context).showSnackBar(
-                            const SnackBar(content: Text('Error ')));
-                      }
-                    },
-                    style: ElevatedButton.styleFrom(
-                      shape: const RoundedRectangleBorder(
-                        borderRadius: BorderRadius.all(Radius.circular(10.0)),
-                      ),
-                      backgroundColor: const Color(0xFF007AFF),
+                        return null;
+                      },
                     ),
-                    child: const Padding(
-                      padding: EdgeInsets.symmetric(
-                        vertical: 15.0,
-                      ), // Adjust padding as needed
-                      child: Center(
-                        child: Text(
-                          "Add Parent",
-                          style: TextStyle(
-                            color: Colors.white,
+                    const SizedBox(
+                      height: 20,
+                    ),
+                    TextFormField(
+                      controller: _lastNameController,
+                      decoration: const InputDecoration(
+                          border: OutlineInputBorder(), labelText: "Last Name"),
+                      validator: (value) {
+                        if (value == null || value.isEmpty) {
+                          return 'Please enter your first name';
+                        }
+                        return null;
+                      },
+                    ),
+                    const SizedBox(
+                      height: 20,
+                    ),
+                    TextFormField(
+                      controller: _emailController,
+                      decoration: const InputDecoration(
+                          border: OutlineInputBorder(), labelText: "Email"),
+                      validator: (value) {
+                        if (value == null || value.isEmpty) {
+                          return 'Please enter your email';
+                        }
+                        final emailRegex = RegExp(
+                          r'^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$',
+                          caseSensitive: false,
+                        );
+                        if (!emailRegex.hasMatch(value)) {
+                          return 'Please enter a valid email address';
+                        }
+
+                        return null;
+                      },
+                    ),
+                    const SizedBox(
+                      height: 40,
+                    ),
+                    ElevatedButton(
+                      onPressed: () async {
+                        //if child enrolled succesfully, move to enroll child to class page
+                        try {
+                          if (_formKey.currentState!.validate()) {
+                            //to save the date if it is not changed
+                            _formKey.currentState!.save();
+                            // If the form is valid, process the data.
+                            ScaffoldMessenger.of(context).showSnackBar(
+                                const SnackBar(
+                                    content: Text('Processing Data: ')));
+
+                            await ParentService().addParent(
+                                _firstNameController.text.trim(),
+                                _lastNameController.text.trim(),
+                                _emailController.text.trim());
+
+                            if (!mounted) return;
+                            Navigator.pushAndRemoveUntil(context,
+                                MaterialPageRoute(builder: (context) {
+                              return HomePage();
+                            }), (route) => false);
+
+                            // Here you can also send the data to a server or save it in a database.
+                          }
+                        } catch (e) {
+                          if (!mounted) return;
+
+                          ScaffoldMessenger.of(context).showSnackBar(
+                              const SnackBar(content: Text('Error ')));
+                        }
+                      },
+                      style: ElevatedButton.styleFrom(
+                        shape: const RoundedRectangleBorder(
+                          borderRadius: BorderRadius.all(Radius.circular(10.0)),
+                        ),
+                        backgroundColor: const Color(0xFF007AFF),
+                      ),
+                      child: const Padding(
+                        padding: EdgeInsets.symmetric(
+                          vertical: 15.0,
+                        ), // Adjust padding as needed
+                        child: Center(
+                          child: Text(
+                            "Add Parent",
+                            style: TextStyle(
+                              color: Colors.white,
+                            ),
                           ),
                         ),
                       ),
-                    ),
-                  )
-                ],
+                    )
+                  ],
+                ),
               ),
             ),
           ),

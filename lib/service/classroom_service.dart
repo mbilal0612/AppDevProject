@@ -134,7 +134,11 @@ class ClassroomService {
   Future<void> removeChildFromWaitList(String uuid, String classroom) async {
     try {
       DocumentSnapshot<Map<String, dynamic>> docSnapshot =
-          await _firestore.collection('parents').doc(classroom).get();
+          await _firestore.collection('classrooms').doc(classroom).get();
+
+      List<dynamic> tempList = docSnapshot['waitList'] as List<dynamic>;
+      List<String> stringList =
+          tempList.map((item) => item.toString()).toList();
 
       ClassroomModel classroomModel = ClassroomModel(
           name: docSnapshot['name'],
@@ -142,11 +146,15 @@ class ClassroomService {
           noOfMonths: docSnapshot['noOfMonths'],
           capacity: docSnapshot['capacity'],
           waitlistCapacity: docSnapshot['waitlistCapacity'],
-          waitList: docSnapshot['waitList']);
+          waitList: stringList);
 
       classroomModel.waitList.remove(uuid);
       await _firestore.collection('classrooms').doc(classroom).update({
         "waitList": classroomModel.waitList,
+      });
+
+      await _firestore.collection('childs').doc(uuid).update({
+        "isWaitListed": false,
       });
     } catch (e) {
       print("There was an error $e");

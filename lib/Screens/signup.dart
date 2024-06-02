@@ -150,12 +150,15 @@ class _SignupPageState extends State<Signup> {
                 ),
 
                 //Login Button
-                OutlinedButton(
+                ElevatedButton(
                     onPressed: () => registerEmail(emailController.text.trim(),
                         emailController.text.trim()),
                     style: OutlinedButton.styleFrom(
-                        shape: const RoundedRectangleBorder(),
-                        backgroundColor: const Color(0xFF587CF4)),
+                      shape: const RoundedRectangleBorder(
+                        borderRadius: BorderRadius.all(Radius.circular(10.0)),
+                      ),
+                      backgroundColor: const Color(0xFF007AFF),
+                    ),
                     child: const Center(
                       child: Text(
                         "Register",
@@ -182,17 +185,19 @@ class _SignupPageState extends State<Signup> {
                 ),
 
                 //Signup Button
-                OutlinedButton(
+                ElevatedButton(
                     onPressed: () {
                       Navigator.pop(context);
                       Navigator.push(context,
                           MaterialPageRoute(builder: (context) {
-                        return const LoginPage(title: "Login");
+                        return const LoginPage();
                       }));
                     },
                     style: OutlinedButton.styleFrom(
-                        side: const BorderSide(color: Color(0xFF587CF4)),
-                        shape: const RoundedRectangleBorder(),
+                        side: const BorderSide(color: Color(0xFF007AFF)),
+                        shape: const RoundedRectangleBorder(
+                          borderRadius: BorderRadius.all(Radius.circular(10.0)),
+                        ),
                         backgroundColor: Colors.white),
                     child: const Center(
                       child: Text(

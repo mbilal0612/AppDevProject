@@ -17,6 +17,10 @@ class ChildService {
         "parentUUID": parentUUID,
         "isWaitListed": false,
       });
+      //add id as well
+      await _firestore.collection('childs').doc(doc.id).update({
+        "id": doc.id,
+      });
 
       //returning the uuid
       return doc.id;
@@ -42,13 +46,14 @@ class ChildService {
     }
   }
 
-  Future<Map<String, dynamic>?> getChildById(uuid) async {
+  Future<ChildModel?> getChildById(uuid) async {
     try {
       DocumentSnapshot docSnapshot =
           await _firestore.collection('childs').doc(uuid).get();
 
       if (docSnapshot.exists) {
-        return docSnapshot.data() as Map<String, dynamic>?;
+        ChildModel childModel = ChildModel.fromDocumentSnapshot(docSnapshot);
+        return childModel;
       } else {
         return null;
       }

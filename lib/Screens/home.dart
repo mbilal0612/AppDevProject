@@ -34,8 +34,8 @@ class HomePage extends StatelessWidget {
                 const ParentHome(parentEmail: 'parent1@gmail.com'), 4),
             homepageCard(
                 context, 'Add Parent', Icons.person_add, const AddParent(), 5),
-            homepageCard(context, 'Go Back', Icons.arrow_back,
-                const LoginPage(title: 'Homepage'), 6),
+            homepageCard(
+                context, 'Go Back', Icons.arrow_back, const LoginPage(), 6),
           ],
         ),
       ),

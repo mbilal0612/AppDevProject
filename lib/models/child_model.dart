@@ -36,4 +36,18 @@ class ChildModel {
       id: doc.id,
     );
   }
+  factory ChildModel.fromDocumentSnapshot(DocumentSnapshot doc) {
+    final Map<String, dynamic> json = doc.data() as Map<String, dynamic>;
+
+    return ChildModel(
+      fName: json['fName'] as String,
+      lName: json['lName'] as String,
+      noOfMonths: json['noOfMonths'] as int,
+      dob: (json['dob'] as Timestamp).toDate(),
+      currentClass: json['currentClass'],
+      parentUUID: json["parentUUID"],
+      isWaitListed: json["isWaitListed"],
+      id: doc.id,
+    );
+  }
 }

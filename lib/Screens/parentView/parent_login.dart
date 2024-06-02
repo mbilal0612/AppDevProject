@@ -4,14 +4,14 @@ import "package:project/screens/home.dart";
 import "package:project/screens/signup.dart";
 import "package:project/service/auth_service.dart";
 
-class LoginPage extends StatefulWidget {
-  const LoginPage({super.key});
+class ParentLoginPage extends StatefulWidget {
+  const ParentLoginPage({super.key});
 
   @override
-  State<LoginPage> createState() => _LoginPageState();
+  State<ParentLoginPage> createState() => _ParentLoginPageState();
 }
 
-class _LoginPageState extends State<LoginPage> {
+class _ParentLoginPageState extends State<ParentLoginPage> {
   final AuthService _authService = AuthService();
 
   bool _hidden = true;

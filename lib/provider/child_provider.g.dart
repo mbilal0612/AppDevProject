@@ -296,6 +296,134 @@ class _GetChildrenByParentEmailProviderElement
   String get email => (origin as GetChildrenByParentEmailProvider).email;
 }
 
+String _$getChildByIdHash() => r'd99aaaa5d6c6591fcd626a7b896c137fcc91ef7b';
+
+/// See also [getChildById].
+@ProviderFor(getChildById)
+const getChildByIdProvider = GetChildByIdFamily();
+
+/// See also [getChildById].
+class GetChildByIdFamily extends Family<AsyncValue<ChildModel?>> {
+  /// See also [getChildById].
+  const GetChildByIdFamily();
+
+  /// See also [getChildById].
+  GetChildByIdProvider call(
+    String uuid,
+  ) {
+    return GetChildByIdProvider(
+      uuid,
+    );
+  }
+
+  @override
+  GetChildByIdProvider getProviderOverride(
+    covariant GetChildByIdProvider provider,
+  ) {
+    return call(
+      provider.uuid,
+    );
+  }
+
+  static const Iterable<ProviderOrFamily>? _dependencies = null;
+
+  @override
+  Iterable<ProviderOrFamily>? get dependencies => _dependencies;
+
+  static const Iterable<ProviderOrFamily>? _allTransitiveDependencies = null;
+
+  @override
+  Iterable<ProviderOrFamily>? get allTransitiveDependencies =>
+      _allTransitiveDependencies;
+
+  @override
+  String? get name => r'getChildByIdProvider';
+}
+
+/// See also [getChildById].
+class GetChildByIdProvider extends AutoDisposeFutureProvider<ChildModel?> {
+  /// See also [getChildById].
+  GetChildByIdProvider(
+    String uuid,
+  ) : this._internal(
+          (ref) => getChildById(
+            ref as GetChildByIdRef,
+            uuid,
+          ),
+          from: getChildByIdProvider,
+          name: r'getChildByIdProvider',
+          debugGetCreateSourceHash:
+              const bool.fromEnvironment('dart.vm.product')
+                  ? null
+                  : _$getChildByIdHash,
+          dependencies: GetChildByIdFamily._dependencies,
+          allTransitiveDependencies:
+              GetChildByIdFamily._allTransitiveDependencies,
+          uuid: uuid,
+        );
+
+  GetChildByIdProvider._internal(
+    super._createNotifier, {
+    required super.name,
+    required super.dependencies,
+    required super.allTransitiveDependencies,
+    required super.debugGetCreateSourceHash,
+    required super.from,
+    required this.uuid,
+  }) : super.internal();
+
+  final String uuid;
+
+  @override
+  Override overrideWith(
+    FutureOr<ChildModel?> Function(GetChildByIdRef provider) create,
+  ) {
+    return ProviderOverride(
+      origin: this,
+      override: GetChildByIdProvider._internal(
+        (ref) => create(ref as GetChildByIdRef),
+        from: from,
+        name: null,
+        dependencies: null,
+        allTransitiveDependencies: null,
+        debugGetCreateSourceHash: null,
+        uuid: uuid,
+      ),
+    );
+  }
+
+  @override
+  AutoDisposeFutureProviderElement<ChildModel?> createElement() {
+    return _GetChildByIdProviderElement(this);
+  }
+
+  @override
+  bool operator ==(Object other) {
+    return other is GetChildByIdProvider && other.uuid == uuid;
+  }
+
+  @override
+  int get hashCode {
+    var hash = _SystemHash.combine(0, runtimeType.hashCode);
+    hash = _SystemHash.combine(hash, uuid.hashCode);
+
+    return _SystemHash.finish(hash);
+  }
+}
+
+mixin GetChildByIdRef on AutoDisposeFutureProviderRef<ChildModel?> {
+  /// The parameter `uuid` of this provider.
+  String get uuid;
+}
+
+class _GetChildByIdProviderElement
+    extends AutoDisposeFutureProviderElement<ChildModel?> with GetChildByIdRef {
+  _GetChildByIdProviderElement(super.provider);
+
+  @override
+  String get uuid => (origin as GetChildByIdProvider).uuid;
+}
+
 String _$getNotWaitListedChildrenInClassHash() =>
     r'7282550a51e7cb1dda2f99ace6bdf29f287cb9a3';
 

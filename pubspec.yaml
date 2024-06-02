@@ -44,6 +44,8 @@ dependencies:
   flutter_riverpod: ^2.5.1
   build_runner: ^2.4.10
   firebase_messaging: ^14.9.4
+  golden_toolkit: ^0.15.0
+  network_image_mock: ^2.1.1
 
 dev_dependencies:
   flutter_test:
