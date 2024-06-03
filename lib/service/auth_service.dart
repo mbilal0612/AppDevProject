@@ -42,6 +42,14 @@ class AuthService {
     }
   }
 
+  // Future<void> SignOut() async {
+  //   try{
+  //     await _auth.
+  //   }catch{
+
+  //   }
+  // }
+
   Future<User?> registerWithEmail(email, password) async {
     try {
       final UserCredential userCredential =

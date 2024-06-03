@@ -30,12 +30,12 @@ class HomePage extends StatelessWidget {
                 const AddClassroom(), 2),
             homepageCard(context, 'Classrooms', Icons.view_list,
                 const ViewClassrooms(), 3),
-            homepageCard(context, 'Parent Home', Icons.home,
-                const ParentHome(parentEmail: 'parent1@gmail.com'), 4),
+            // homepageCard(context, 'Parent Home', Icons.home,
+            //     const ParentHome(parentEmail: 'parent1@gmail.com'), 4),
             homepageCard(
-                context, 'Add Parent', Icons.person_add, const AddParent(), 5),
+                context, 'Add Parent', Icons.person_add, const AddParent(), 4),
             homepageCard(
-                context, 'Go Back', Icons.arrow_back, const LoginPage(), 6),
+                context, 'Sign Out', Icons.arrow_back, const LoginPage(), 5),
           ],
         ),
       ),

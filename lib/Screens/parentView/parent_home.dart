@@ -168,7 +168,7 @@ class ParentHome extends ConsumerWidget {
                 return const Center(child: const CircularProgressIndicator());
               }, loading: () {
                 return const Center(
-                  child: const CircularProgressIndicator(),
+                  child: CircularProgressIndicator(),
                 );
               }),
               // switch (studentsNotifier) {

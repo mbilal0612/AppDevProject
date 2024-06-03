@@ -20,9 +20,8 @@ void main() {
     expect(find.text('Enroll Child'), findsOneWidget);
     expect(find.text('Add Classroom'), findsOneWidget);
     expect(find.text('Classrooms'), findsOneWidget);
-    // expect(find.text('Parent Home'), findsOneWidget);
     expect(find.text('Add Parent'), findsOneWidget);
-    expect(find.text('Go Back'), findsOneWidget);
+    expect(find.text('Sign Out'), findsOneWidget);
 
     await tester.tap(find.text('Enroll Child'));
     await tester.pumpAndSettle();

@@ -30,21 +30,21 @@ class _LoginPageState extends State<LoginPage> {
     if (user != null) {
       //to make sure that the widget is mounted when we switch contexts
       //add user to user Roles with admin rights
-      var role = _roleService.checkUserRole(user.email!);
-      if (role == "") {
-        _roleService.addUserRole(user.email!, Role.admin);
-      } else if (role == "admin") {
-        if (!mounted) return;
-        Navigator.pushAndRemoveUntil(context,
-            MaterialPageRoute(builder: (context) {
-          return const HomePage();
-        }), (route) => false);
-      } else if (role == "parent") {
-        Navigator.pushAndRemoveUntil(context,
-            MaterialPageRoute(builder: (context) {
-          return ParentHome(parentEmail: user.email!);
-        }), (route) => false);
-      }
+      // String role = await _roleService.checkUserRole(user.email!);
+      // if (role == "") {
+      // _roleService.addUserRole(user.email!, Role.admin);
+      // } else if (role == "admin") {
+      if (!mounted) return;
+      Navigator.pushAndRemoveUntil(context,
+          MaterialPageRoute(builder: (context) {
+        return const HomePage();
+      }), (route) => false);
+      // } else if (role == "parent") {
+      Navigator.pushAndRemoveUntil(context,
+          MaterialPageRoute(builder: (context) {
+        return ParentHome(parentEmail: user.email!);
+      }), (route) => false);
+      // }
     } else {
       print("There was an error: user == null");
       ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
@@ -63,21 +63,21 @@ class _LoginPageState extends State<LoginPage> {
     User? user = await _authService.loginWithEmail(email, password);
     if (user != null) {
       //to make sure that the widget is mounted when we switch contexts
-      var role = _roleService.checkUserRole(user.email!);
-      if (role == "") {
-        _roleService.addUserRole(user.email!, Role.admin);
-      } else if (role == "admin") {
-        if (!mounted) return;
-        Navigator.pushAndRemoveUntil(context,
-            MaterialPageRoute(builder: (context) {
-          return const HomePage();
-        }), (route) => false);
-      } else if (role == "parent") {
-        Navigator.pushAndRemoveUntil(context,
-            MaterialPageRoute(builder: (context) {
-          return ParentHome(parentEmail: user.email!);
-        }), (route) => false);
-      }
+      // var role = _roleService.checkUserRole(user.email!);
+      // if (role == "") {
+      // _roleService.addUserRole(user.email!, Role.admin);
+      // } else if (role == "admin") {
+      if (!mounted) return;
+      Navigator.pushAndRemoveUntil(context,
+          MaterialPageRoute(builder: (context) {
+        return const HomePage();
+      }), (route) => false);
+      // } else if (role == "parent") {
+      // Navigator.pushAndRemoveUntil(context,
+      //     MaterialPageRoute(builder: (context) {
+      //   return ParentHome(parentEmail: user.email!);
+      // }), (route) => false);
+      // }
     } else {
       if (!mounted) return;
       ScaffoldMessenger.of(context)
@@ -256,41 +256,41 @@ class _LoginPageState extends State<LoginPage> {
                     ),
                   ),
 
-                  const Padding(
-                    padding: EdgeInsets.all(16.0),
-                    child: Row(
-                      children: [
-                        Expanded(
-                          child: Divider(
-                            color: Colors.grey,
-                            thickness: 1.0,
-                          ),
-                        ),
-                        Text("  or  "),
-                        Expanded(
-                          child: Divider(
-                            color: Colors.grey,
-                            thickness: 1.0,
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
+                  // const Padding(
+                  //   padding: EdgeInsets.all(16.0),
+                  //   child: Row(
+                  //     children: [
+                  //       Expanded(
+                  //         child: Divider(
+                  //           color: Colors.grey,
+                  //           thickness: 1.0,
+                  //         ),
+                  //       ),
+                  //       Text("  or  "),
+                  //       Expanded(
+                  //         child: Divider(
+                  //           color: Colors.grey,
+                  //           thickness: 1.0,
+                  //         ),
+                  //       ),
+                  //     ],
+                  //   ),
+                  // ),
 
-                  // login with Google button
-                  ElevatedButton(
-                      onPressed: loginGoogle,
-                      style: ElevatedButton.styleFrom(
-                          shape: const RoundedRectangleBorder(
-                              borderRadius:
-                                  BorderRadius.all(Radius.circular(10.0))),
-                          backgroundColor: const Color(0xFF007AFF)),
-                      child: const Center(
-                        child: Text(
-                          "Login with Google",
-                          style: TextStyle(color: Colors.white),
-                        ),
-                      )),
+                  // // login with Google button
+                  // ElevatedButton(
+                  //     onPressed: loginGoogle,
+                  //     style: ElevatedButton.styleFrom(
+                  //         shape: const RoundedRectangleBorder(
+                  //             borderRadius:
+                  //                 BorderRadius.all(Radius.circular(10.0))),
+                  //         backgroundColor: const Color(0xFF007AFF)),
+                  //     child: const Center(
+                  //       child: Text(
+                  //         "Login with Google",
+                  //         style: TextStyle(color: Colors.white),
+                  //       ),
+                  //     )),
                 ],
               ),
             ),

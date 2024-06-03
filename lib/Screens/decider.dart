@@ -27,22 +27,21 @@ class _DeciderState extends State<Decider> {
       if (user != null) {
         //to make sure that the widget is mounted when we switch contexts
         //add user to user Roles with admin rights
-        var role = _roleService.checkUserRole(user.email!);
+        // var role = _roleService.checkUserRole(user.email!);
 
-        if (role == "") {
-          _roleService.addUserRole(user.email!, Role.parent);
-        } else if (role == "parent") {
-          Navigator.pushAndRemoveUntil(context,
-              MaterialPageRoute(builder: (context) {
-            return ParentHome(parentEmail: user.email!);
-          }), (route) => false);
-        } else if (role == "admin") {
-          if (!mounted) return;
-          Navigator.pushAndRemoveUntil(context,
-              MaterialPageRoute(builder: (context) {
-            return const HomePage();
-          }), (route) => false);
-        }
+        // if (role == "") {
+        //   _roleService.addUserRole(user.email!, Role.parent);
+        // } else if (role == "parent") {
+        Navigator.push(context, MaterialPageRoute(builder: (context) {
+          return ParentHome(parentEmail: user.email!);
+        }));
+        // } else if (role == "admin") {
+        //   if (!mounted) return;
+        //   Navigator.pushAndRemoveUntil(context,
+        //       MaterialPageRoute(builder: (context) {
+        //     return const HomePage();
+        //   }), (route) => false);
+        // }
       } else {
         print("There was an error: user == null");
 

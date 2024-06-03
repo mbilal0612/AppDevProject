@@ -9,7 +9,7 @@ class RoleService {
     try {
       await _firestore.collection('user_role').doc(email).set({
         'uuid': email,
-        'role': role,
+        'role': role.toString(),
       });
       return true;
     } catch (e) {

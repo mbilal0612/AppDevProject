@@ -148,11 +148,11 @@ class UpdateClassroom extends ConsumerWidget {
                                           .addToClassComplete(
                                               uuid, selectedClassroom);
 
-                                      Navigator.pushAndRemoveUntil(context,
+                                      Navigator.push(context,
                                           MaterialPageRoute(builder: (context) {
                                         return ViewClassroom(
                                             classroom: classroomModel);
-                                      }), (route) => false);
+                                      }));
                                     } catch (e) {
                                       print("Error: $e");
                                     }

@@ -1,7 +1,7 @@
 import 'package:flutter/widgets.dart';
 import 'package:golden_toolkit/golden_toolkit.dart';
 
-import '../test/test_helper.dart';
+import '../test_helper.dart';
 
 DeviceBuilder createGoldenBuilder(Widget widget, String title) {
   return DeviceBuilder()

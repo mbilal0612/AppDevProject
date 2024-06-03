@@ -99,8 +99,17 @@ class ViewClassroom extends ConsumerWidget {
                                             uuid: child.id,
                                             classroomModel: classroom);
                                       }));
+                                      var temp = ref.refresh(
+                                          getNotWaitListedChildrenInClassProvider(
+                                              classroom.name));
+                                      var temp2 = ref.refresh(
+                                          getWaitListedChildrenInClassProvider(
+                                              classroom.name));
+                                      var temp3 = ref.refresh(
+                                          getNotWaitListedChildrenInClassCountProvider(
+                                              classroom.name));
                                     },
-                                    icon: const Icon(Icons.change_circle),
+                                    icon: const Icon(Icons.remove_circle),
                                   ),
                                 ),
                               ),
