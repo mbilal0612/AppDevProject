@@ -1,8 +1,11 @@
 import "package:firebase_auth/firebase_auth.dart";
 import "package:flutter/material.dart";
+import "package:project/commons/role.dart";
 import "package:project/screens/home.dart";
+import "package:project/screens/parentView/parent_home.dart";
 import "package:project/screens/signup.dart";
 import "package:project/service/auth_service.dart";
+import "package:project/service/role_service.dart";
 
 class LoginPage extends StatefulWidget {
   const LoginPage({super.key});
@@ -13,6 +16,7 @@ class LoginPage extends StatefulWidget {
 
 class _LoginPageState extends State<LoginPage> {
   final AuthService _authService = AuthService();
+  final RoleService _roleService = RoleService();
 
   bool _hidden = true;
   final _formKey = GlobalKey<FormState>();
@@ -25,13 +29,31 @@ class _LoginPageState extends State<LoginPage> {
     User? user = await _authService.signInWithGoogle();
     if (user != null) {
       //to make sure that the widget is mounted when we switch contexts
-      if (!mounted) return;
-      Navigator.pushAndRemoveUntil(context,
-          MaterialPageRoute(builder: (context) {
-        return const HomePage();
-      }), (route) => false);
+      //add user to user Roles with admin rights
+      var role = _roleService.checkUserRole(user.email!);
+      if (role == "") {
+        _roleService.addUserRole(user.email!, Role.admin);
+      } else if (role == "admin") {
+        if (!mounted) return;
+        Navigator.pushAndRemoveUntil(context,
+            MaterialPageRoute(builder: (context) {
+          return const HomePage();
+        }), (route) => false);
+      } else if (role == "parent") {
+        Navigator.pushAndRemoveUntil(context,
+            MaterialPageRoute(builder: (context) {
+          return ParentHome(parentEmail: user.email!);
+        }), (route) => false);
+      }
     } else {
       print("There was an error: user == null");
+      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+        content: Text(
+          'Error Logging in ',
+          style: TextStyle(color: Colors.white),
+        ),
+        backgroundColor: Colors.redAccent,
+      ));
     }
   }
 
@@ -41,11 +63,21 @@ class _LoginPageState extends State<LoginPage> {
     User? user = await _authService.loginWithEmail(email, password);
     if (user != null) {
       //to make sure that the widget is mounted when we switch contexts
-      if (!mounted) return;
-      Navigator.pushAndRemoveUntil(context,
-          MaterialPageRoute(builder: (context) {
-        return const HomePage();
-      }), (route) => false);
+      var role = _roleService.checkUserRole(user.email!);
+      if (role == "") {
+        _roleService.addUserRole(user.email!, Role.admin);
+      } else if (role == "admin") {
+        if (!mounted) return;
+        Navigator.pushAndRemoveUntil(context,
+            MaterialPageRoute(builder: (context) {
+          return const HomePage();
+        }), (route) => false);
+      } else if (role == "parent") {
+        Navigator.pushAndRemoveUntil(context,
+            MaterialPageRoute(builder: (context) {
+          return ParentHome(parentEmail: user.email!);
+        }), (route) => false);
+      }
     } else {
       if (!mounted) return;
       ScaffoldMessenger.of(context)

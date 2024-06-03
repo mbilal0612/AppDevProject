@@ -19,4 +19,20 @@ class RoleService {
       return false;
     }
   }
+
+  Future<String> checkUserRole(String email) async {
+    try {
+      DocumentSnapshot<Map<String, dynamic>> documentQuerySnapshot =
+          await _firestore.collection('user_role').doc(email).get();
+
+      if (documentQuerySnapshot.exists) {
+        return documentQuerySnapshot.data()!["role"];
+      } else {
+        return "";
+      }
+    } catch (e) {
+      print("Error ");
+      return "";
+    }
+  }
 }

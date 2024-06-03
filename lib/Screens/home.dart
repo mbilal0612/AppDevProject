@@ -27,7 +27,7 @@ class HomePage extends StatelessWidget {
             homepageCard(
                 context, 'Enroll Child', Icons.child_care, EnrollChild(), 1),
             homepageCard(context, 'Add Classroom', Icons.class_,
-                const AddClassroom(title: 'Add classroom'), 2),
+                const AddClassroom(), 2),
             homepageCard(context, 'Classrooms', Icons.view_list,
                 const ViewClassrooms(), 3),
             homepageCard(context, 'Parent Home', Icons.home,

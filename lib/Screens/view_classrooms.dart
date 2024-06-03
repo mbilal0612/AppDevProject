@@ -76,7 +76,11 @@ class ViewClassrooms extends ConsumerWidget {
                                     const Text("Capacity: ",
                                         style: TextStyle(
                                             fontWeight: FontWeight.bold)),
-                                    Text(classroom.capacity.toString())
+                                    Text(
+                                      classroom.capacity.toString(),
+                                      style:
+                                          const TextStyle(color: Colors.white),
+                                    )
                                   ],
                                 ),
                                 Row(
@@ -84,7 +88,11 @@ class ViewClassrooms extends ConsumerWidget {
                                     const Text("WaitListed: ",
                                         style: TextStyle(
                                             fontWeight: FontWeight.bold)),
-                                    Text(classroom.waitList.length.toString())
+                                    Text(
+                                      classroom.waitList.length.toString(),
+                                      style:
+                                          const TextStyle(color: Colors.white),
+                                    )
                                   ],
                                 ),
                                 Row(
@@ -94,7 +102,11 @@ class ViewClassrooms extends ConsumerWidget {
                                       style: TextStyle(
                                           fontWeight: FontWeight.bold),
                                     ),
-                                    Text(classroom.waitlistCapacity.toString())
+                                    Text(
+                                      classroom.waitlistCapacity.toString(),
+                                      style:
+                                          const TextStyle(color: Colors.white),
+                                    )
                                   ],
                                 ),
                               ],
@@ -105,27 +117,6 @@ class ViewClassrooms extends ConsumerWidget {
                             ),
                           ),
                         ),
-                        // Row(
-                        //   mainAxisAlignment: MainAxisAlignment.spaceAround,
-                        //   children: [
-                        //     Expanded(
-                        //       child: TextButton(
-                        //         onPressed: () {
-                        //           // Handle the first button action
-                        //         },
-                        //         child: const Text('Weight Enrolled'),
-                        //       ),
-                        //     ),
-                        //     Expanded(
-                        //       child: TextButton(
-                        //         onPressed: () {
-                        //           // Handle the second button action
-                        //         },
-                        //         child: const Text('Button 2'),
-                        //       ),
-                        //     ),
-                        //   ],
-                        // ),
                       ],
                     ),
                   );

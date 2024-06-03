@@ -5,8 +5,7 @@ import 'package:project/screens/home.dart';
 import 'package:project/service/classroom_service.dart';
 
 class AddClassroom extends StatefulWidget {
-  const AddClassroom({super.key, required this.title});
-  final String title;
+  const AddClassroom({super.key});
   @override
   State<AddClassroom> createState() => _AddClassroomState();
 }

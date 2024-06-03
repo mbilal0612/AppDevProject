@@ -1,6 +1,11 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:project/commons/role.dart';
+import 'package:project/screens/home.dart';
 import 'package:project/screens/login.dart';
-import 'package:project/screens/parentView/parent_login.dart';
+import 'package:project/screens/parentView/parent_home.dart';
+import 'package:project/service/auth_service.dart';
+import 'package:project/service/role_service.dart';
 
 class Decider extends StatefulWidget {
   const Decider({super.key});
@@ -10,8 +15,47 @@ class Decider extends StatefulWidget {
 }
 
 class _DeciderState extends State<Decider> {
+  final AuthService _authService = AuthService();
+  final RoleService _roleService = RoleService();
+
   @override
   Widget build(BuildContext context) {
+    void loginGoogle() async {
+      print("Attempting login");
+      //login with google
+      User? user = await _authService.signInWithGoogle();
+      if (user != null) {
+        //to make sure that the widget is mounted when we switch contexts
+        //add user to user Roles with admin rights
+        var role = _roleService.checkUserRole(user.email!);
+
+        if (role == "") {
+          _roleService.addUserRole(user.email!, Role.parent);
+        } else if (role == "parent") {
+          Navigator.pushAndRemoveUntil(context,
+              MaterialPageRoute(builder: (context) {
+            return ParentHome(parentEmail: user.email!);
+          }), (route) => false);
+        } else if (role == "admin") {
+          if (!mounted) return;
+          Navigator.pushAndRemoveUntil(context,
+              MaterialPageRoute(builder: (context) {
+            return const HomePage();
+          }), (route) => false);
+        }
+      } else {
+        print("There was an error: user == null");
+
+        ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+          content: Text(
+            'Error ',
+            style: TextStyle(color: Colors.white),
+          ),
+          backgroundColor: Colors.redAccent,
+        ));
+      }
+    }
+
     return Scaffold(
       body: SafeArea(
         child: SizedBox(
@@ -21,12 +65,7 @@ class _DeciderState extends State<Decider> {
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 ElevatedButton(
-                  onPressed: () {
-                    Navigator.push(context,
-                        MaterialPageRoute(builder: (context) {
-                      return ParentLoginPage();
-                    }));
-                  },
+                  onPressed: loginGoogle,
                   style: ElevatedButton.styleFrom(
                     shape: const RoundedRectangleBorder(
                       borderRadius: BorderRadius.all(Radius.circular(10.0)),
@@ -54,7 +93,7 @@ class _DeciderState extends State<Decider> {
                   onPressed: () {
                     Navigator.push(context,
                         MaterialPageRoute(builder: (context) {
-                      return LoginPage();
+                      return const LoginPage();
                     }));
                   },
                   style: ElevatedButton.styleFrom(
