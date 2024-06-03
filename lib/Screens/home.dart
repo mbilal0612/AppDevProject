@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:project/Screens/view_classroom.dart';
 import 'package:project/Screens/view_classrooms.dart';
 import 'package:project/screens/parentView/parent_home.dart';
-import 'package:project/screens/view_children.dart';
 import 'package:project/screens/add_classroom.dart';
 import 'package:project/screens/add_parent.dart';
 import 'package:project/screens/enroll_child.dart';

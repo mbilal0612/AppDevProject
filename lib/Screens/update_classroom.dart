@@ -35,11 +35,11 @@ class UpdateClassroom extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final classroomsNotifier = ref.watch(getAllClassroomsProvider);
-    final selectedClassroom = ref.watch(selectedClassroomProvider);
-    final childById = ref.watch(getChildByIdProvider(uuid));
-    final width = MediaQuery.of(context).size.width;
-    final height = MediaQuery.of(context).size.height;
+    final _classroomsNotifier = ref.watch(getAllClassroomsProvider);
+    final _selectedClassroom = ref.watch(selectedClassroomProvider);
+    final _childById = ref.watch(getChildByIdProvider(uuid));
+    final _width = MediaQuery.of(context).size.width;
+    final _height = MediaQuery.of(context).size.height;
 
     return Scaffold(
       appBar: AppBar(
@@ -47,10 +47,10 @@ class UpdateClassroom extends ConsumerWidget {
       ),
       body: SafeArea(
           child: SizedBox(
-        height: height,
+        height: _height,
         child: Column(
           children: [
-            childById.when(
+            _childById.when(
               data: (child) {
                 if (child == null) {
                   return const Center(
@@ -110,7 +110,7 @@ class UpdateClassroom extends ConsumerWidget {
                 );
               },
             ),
-            switch (classroomsNotifier) {
+            switch (_classroomsNotifier) {
               AsyncData(:final value) => Container(
                   child: Padding(
                     padding: const EdgeInsets.all(8.0),
@@ -119,7 +119,7 @@ class UpdateClassroom extends ConsumerWidget {
                           crossAxisAlignment: CrossAxisAlignment.center,
                           children: <Widget>[
                             DropdownMenu(
-                              width: width - 20,
+                              width: _width - 20,
                               hintText: "Select a class to add to",
                               dropdownMenuEntries:
                                   value!.map<DropdownMenuEntry<String>>((v) {
@@ -138,15 +138,15 @@ class UpdateClassroom extends ConsumerWidget {
                             Center(
                               child: ElevatedButton(
                                 onPressed: () async {
-                                  if (selectedClassroom.isNotEmpty) {
+                                  if (_selectedClassroom.isNotEmpty) {
                                     try {
                                       //update the class
                                       await ChildService().updateChildClass(
-                                          uuid, selectedClassroom);
+                                          uuid, _selectedClassroom);
 
                                       await ClassroomService()
                                           .addToClassComplete(
-                                              uuid, selectedClassroom);
+                                              uuid, _selectedClassroom);
 
                                       Navigator.push(context,
                                           MaterialPageRoute(builder: (context) {

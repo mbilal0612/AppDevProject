@@ -166,45 +166,45 @@ class _SignupPageState extends State<Signup> {
                       ),
                     )),
 
-                // const Row(
-                //   children: [
-                //     Expanded(
-                //       child: Divider(
-                //         color: Colors.grey,
-                //         thickness: 1.0,
-                //       ),
-                //     ),
-                //     Text("  or  "),
-                //     Expanded(
-                //       child: Divider(
-                //         color: Colors.grey,
-                //         thickness: 1.0,
-                //       ),
-                //     ),
-                //   ],
-                // ),
+                const Row(
+                  children: [
+                    Expanded(
+                      child: Divider(
+                        color: Colors.grey,
+                        thickness: 1.0,
+                      ),
+                    ),
+                    Text("  or  "),
+                    Expanded(
+                      child: Divider(
+                        color: Colors.grey,
+                        thickness: 1.0,
+                      ),
+                    ),
+                  ],
+                ),
 
                 // //Signup Button
-                // ElevatedButton(
-                //     onPressed: () {
-                //       Navigator.pop(context);
-                //       Navigator.push(context,
-                //           MaterialPageRoute(builder: (context) {
-                //         return const LoginPage();
-                //       }));
-                //     },
-                //     style: OutlinedButton.styleFrom(
-                //         side: const BorderSide(color: Color(0xFF007AFF)),
-                //         shape: const RoundedRectangleBorder(
-                //           borderRadius: BorderRadius.all(Radius.circular(10.0)),
-                //         ),
-                //         backgroundColor: Colors.white),
-                //     child: const Center(
-                //       child: Text(
-                //         "Login",
-                //         style: TextStyle(color: Color(0xFF587CF4)),
-                //       ),
-                //     )),
+                ElevatedButton(
+                    onPressed: () {
+                      Navigator.pop(context);
+                      Navigator.push(context,
+                          MaterialPageRoute(builder: (context) {
+                        return const LoginPage();
+                      }));
+                    },
+                    style: OutlinedButton.styleFrom(
+                        side: const BorderSide(color: Color(0xFF007AFF)),
+                        shape: const RoundedRectangleBorder(
+                          borderRadius: BorderRadius.all(Radius.circular(10.0)),
+                        ),
+                        backgroundColor: Colors.white),
+                    child: const Center(
+                      child: Text(
+                        "Login",
+                        style: TextStyle(color: Color(0xFF587CF4)),
+                      ),
+                    )),
               ],
             ),
           ),
